@@ -7,7 +7,7 @@ import logging
 from pyowletapi.sock import Sock
 from pyowletapi.exceptions import OwletError
 
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 

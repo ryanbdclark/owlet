@@ -31,7 +31,7 @@ class OwletBinarySensorEntityDescription(
     """Represent the owlet binary sensor entity description."""
 
 
-SENSOR_TYPES: tuple[OwletBinarySensorEntityDescription, ...] = (
+SENSORS: tuple[OwletBinarySensorEntityDescription, ...] = (
     OwletBinarySensorEntityDescription(
         key="charging",
         name="Charging",
@@ -98,9 +98,7 @@ async def async_setup_entry(
 
     coordinator: OwletCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
-    entities = [
-        OwletBinarySensor(coordinator, description) for description in SENSOR_TYPES
-    ]
+    entities = [OwletBinarySensor(coordinator, sensor) for sensor in SENSORS]
 
     async_add_entities(entities)
 
@@ -111,10 +109,10 @@ class OwletBinarySensor(OwletBaseEntity, BinarySensorEntity):
     def __init__(
         self,
         coordinator: OwletCoordinator,
-        description: OwletBinarySensorEntityDescription,
+        sensor_description: OwletBinarySensorEntityDescription,
     ) -> None:
         """Initialize the binary sensor."""
-        self.entity_description = description
+        self.entity_description = sensor_description
         self._attr_unique_id = (
             f"{coordinator.config_entry.entry_id}-{self.entity_description.name}"
         )
@@ -122,4 +120,5 @@ class OwletBinarySensor(OwletBaseEntity, BinarySensorEntity):
 
     @property
     def is_on(self) -> bool:
+        """Return true if the binary sensor is on."""
         return self.sock.properties[self.entity_description.element]

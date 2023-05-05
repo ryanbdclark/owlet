@@ -1,12 +1,17 @@
 {
   "config": {
     "step": {
-      "user": {
-        "data": {
-          "region": "[%key:common::config_flow::data::host%]",
-          "username": "[%key:common::config_flow::data::username%]",
-          "password": "[%key:common::config_flow::data::password%]"
+      "user":{
+        "title": "Enter login details",
+        "data":{
+          "region": "Region",
+          "username": "Email",
+          "password": "Password"
         }
+      },
+      "socks":{
+        "title": "Configure Socks",
+        "description":"Select socks to configure"
       }
     },
     "error": {

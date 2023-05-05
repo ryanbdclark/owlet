@@ -5,6 +5,7 @@ import logging
 from typing import Any
 
 from pyowletapi.owlet import Owlet
+from pyowletapi.sock import Sock
 from pyowletapi.exceptions import (
     OwletConnectionError,
     OwletAuthenticationError,
@@ -17,6 +18,7 @@ from homeassistant import config_entries
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers import config_validation
 
 from .const import (
     DOMAIN,
@@ -46,6 +48,7 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self._region: str
         self._username: str
         self._password: str
+        self._devices: dict[str, Sock]
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -70,7 +73,8 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 await owlet.authenticate()
                 try:
-                    devices = await owlet.get_devices()
+                    self._devices = await owlet.get_devices()
+                    return await self.async_step_socks()
                 except OwletDevicesError:
                     errors["base"] = "no_devices"
 
@@ -81,17 +85,32 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             except Exception:  # pylint: disable=broad-except
                 _LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"
-            else:
-                return self.async_create_entry(
-                    title="Owlet",
-                    data={
-                        CONF_OWLET_REGION: self._region,
-                        CONF_OWLET_USERNAME: self._username,
-                        CONF_OWLET_PASSWORD: self._password,
-                        "devices": list(devices.keys()),
-                    },
-                )
 
         return self.async_show_form(
             step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
         )
+
+    async def async_step_socks(self, user_input=None):
+        """Allow the user to choose which devices to configure"""
+        errors = {}
+
+        if user_input is not None:
+            return self.async_create_entry(
+                title="Owlet",
+                data={
+                    CONF_OWLET_REGION: self._region,
+                    CONF_OWLET_USERNAME: self._username,
+                    CONF_OWLET_PASSWORD: self._password,
+                    "devices": user_input["socks"],
+                },
+            )
+
+        schema = vol.Schema(
+            {
+                vol.Required("socks"): config_validation.multi_select(
+                    {sock: sock for sock in list(self._devices.keys())}
+                ),
+            }
+        )
+
+        return self.async_show_form(step_id="socks", data_schema=schema, errors=errors)
