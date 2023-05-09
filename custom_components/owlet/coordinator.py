@@ -13,7 +13,6 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 from .const import (
     DOMAIN,
-    POLLING_INTERVAL,
     MANUFACTURER,
 )
 
@@ -23,18 +22,19 @@ _LOGGER = logging.getLogger(__name__)
 class OwletCoordinator(DataUpdateCoordinator):
     """Coordinator is responsible for querying the device at a specified route."""
 
-    def __init__(self, hass: HomeAssistant, sock: Sock) -> None:
+    def __init__(self, hass: HomeAssistant, sock: Sock, interval: int) -> None:
         """Initialise a custom coordinator."""
         super().__init__(
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(seconds=POLLING_INTERVAL),
+            update_interval=timedelta(seconds=interval),
         )
         assert self.config_entry is not None
         self._device_unique_id = sock.serial
         self._model = sock.model
         self._sw_version = sock.sw_version
+        self._hw_version = sock.version
         self.sock = sock
         self.device_info = DeviceInfo(
             identifiers={(DOMAIN, self._device_unique_id)},
@@ -42,6 +42,7 @@ class OwletCoordinator(DataUpdateCoordinator):
             manufacturer=MANUFACTURER,
             model=self._model,
             sw_version=self._sw_version,
+            hw_version=self._hw_version,
         )
 
     async def _async_update_data(self) -> None:

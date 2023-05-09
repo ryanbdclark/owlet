@@ -3,14 +3,24 @@ from __future__ import annotations
 
 import logging
 
-from pyowletapi.owlet import Owlet
+from pyowletapi.api import OwletAPI
+from pyowletapi.sock import Sock
 from pyowletapi.exceptions import OwletAuthenticationError, OwletDevicesError
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from .const import DOMAIN, CONF_OWLET_REGION, CONF_OWLET_USERNAME, CONF_OWLET_PASSWORD
+from .const import (
+    DOMAIN,
+    CONF_OWLET_REGION,
+    CONF_OWLET_USERNAME,
+    CONF_OWLET_PASSWORD,
+    CONF_OWLET_POLLINTERVAL,
+    CONF_OWLET_EXPIRY,
+    CONF_OWLET_TOKEN,
+    SUPPORTED_VERSIONS,
+)
 from .coordinator import OwletCoordinator
 
 PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.SENSOR]
@@ -22,34 +32,35 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Owlet Smart Sock from a config entry."""
     hass.data.setdefault(DOMAIN, {})
 
-    owlet = Owlet(
+    owlet_api = OwletAPI(
         entry.data[CONF_OWLET_REGION],
         entry.data[CONF_OWLET_USERNAME],
         entry.data[CONF_OWLET_PASSWORD],
+        entry.data[CONF_OWLET_TOKEN],
+        entry.data[CONF_OWLET_EXPIRY],
         async_get_clientsession(hass),
     )
 
     try:
-        await owlet.authenticate()
+        token = await owlet_api.authenticate()
+
+        if token:
+            entry.data[CONF_OWLET_TOKEN] = token[CONF_OWLET_TOKEN]
+            entry.data[CONF_OWLET_EXPIRY] = token[CONF_OWLET_EXPIRY]
+
+        socks = {
+            device["device"]["dsn"]: Sock(owlet_api, device["device"])
+            for device in await owlet_api.get_devices(SUPPORTED_VERSIONS)
+        }
+
     except OwletAuthenticationError as err:
         _LOGGER.error("Login failed %s", err)
         return False
 
-    existing_socks = entry.data["devices"]
-    new_socks = []
-    try:
-        socks = await owlet.get_devices()
-    except OwletDevicesError:
-        pass
-
-    [new_socks.append(sock) for sock in socks if sock not in existing_socks]
-
-    if new_socks:
-        hass.config_entries.async_update_entry(
-            entry, data={**entry.data, **{"devices": socks}}
-        )
-
-    coordinators = [OwletCoordinator(hass, sock) for sock in socks.values()]
+    coordinators = [
+        OwletCoordinator(hass, sock, entry.options.get(CONF_OWLET_POLLINTERVAL))
+        for sock in socks.values()
+    ]
 
     for coordinator in coordinators:
         await coordinator.async_config_entry_first_refresh()

@@ -8,10 +8,6 @@
           "username": "Email",
           "password": "Password"
         }
-      },
-      "socks":{
-        "title": "Configure Socks",
-        "description":"Select socks to configure"
       }
     },
     "error": {
@@ -21,6 +17,16 @@
     },
     "abort": {
       "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+    }
+  },
+  "options": {
+    "step": {
+      "init":{
+        "title":"Configure options for Owlet",
+        "data":{
+          "pollinterval": "Polling interval in seconds, min 10"
+        }
+      }
     }
   }
 }

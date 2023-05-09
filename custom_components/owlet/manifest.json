@@ -10,7 +10,7 @@
   "homekit": {},
   "iot_class": "cloud_polling",
   "requirements": [
-    "pyowletapi==2023.5.7"
+    "pyowletapi==2023.5.17"
   ],
-  "version":"1.1.0"
+  "version":"1.2.0"
 }

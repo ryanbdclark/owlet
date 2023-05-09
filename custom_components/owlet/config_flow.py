@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from pyowletapi.owlet import Owlet
+from pyowletapi.api import OwletAPI
 from pyowletapi.sock import Sock
 from pyowletapi.exceptions import (
     OwletConnectionError,
@@ -18,22 +18,27 @@ from homeassistant import config_entries
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers import config_validation
+from homeassistant.core import callback
 
 from .const import (
     DOMAIN,
     CONF_OWLET_REGION,
     CONF_OWLET_USERNAME,
     CONF_OWLET_PASSWORD,
+    CONF_OWLET_POLLINTERVAL,
+    CONF_OWLET_TOKEN,
+    CONF_OWLET_EXPIRY,
+    POLLING_INTERVAL,
+    SUPPORTED_VERSIONS,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
-        vol.Required(CONF_OWLET_REGION): vol.In(["europe", "world"]),
-        vol.Required(CONF_OWLET_USERNAME): str,
-        vol.Required(CONF_OWLET_PASSWORD): str,
+        vol.Required("region"): vol.In(["europe", "world"]),
+        vol.Required("username"): str,
+        vol.Required("password"): str,
     }
 )
 
@@ -60,7 +65,7 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self._username = user_input[CONF_OWLET_USERNAME]
             self._password = user_input[CONF_OWLET_PASSWORD]
 
-            owlet = Owlet(
+            owlet_api = OwletAPI(
                 self._region,
                 self._username,
                 self._password,
@@ -71,10 +76,20 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self._abort_if_unique_id_configured()
 
             try:
-                await owlet.authenticate()
+                token = await owlet_api.authenticate()
                 try:
-                    self._devices = await owlet.get_devices()
-                    return await self.async_step_socks()
+                    await owlet_api.get_devices(SUPPORTED_VERSIONS)
+                    return self.async_create_entry(
+                        title=self._username,
+                        data={
+                            CONF_OWLET_REGION: self._region,
+                            CONF_OWLET_USERNAME: self._username,
+                            CONF_OWLET_PASSWORD: self._password,
+                            CONF_OWLET_TOKEN: token[CONF_OWLET_TOKEN],
+                            CONF_OWLET_EXPIRY: token[CONF_OWLET_EXPIRY],
+                        },
+                        options={CONF_OWLET_POLLINTERVAL: POLLING_INTERVAL},
+                    )
                 except OwletDevicesError:
                     errors["base"] = "no_devices"
 
@@ -90,27 +105,32 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
         )
 
-    async def async_step_socks(self, user_input=None):
-        """Allow the user to choose which devices to configure"""
-        errors = {}
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry):
+        """Get the options flow for this handler."""
+        return OptionsFlowHandler(config_entry)
 
+
+class OptionsFlowHandler(config_entries.OptionsFlow):
+    """Handle a options flow for owlet"""
+
+    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+        """Initialise options flow"""
+        self.config_entry = config_entry
+
+    async def async_step_init(self, user_input=None):
+        """Handle options flow"""
         if user_input is not None:
-            return self.async_create_entry(
-                title="Owlet",
-                data={
-                    CONF_OWLET_REGION: self._region,
-                    CONF_OWLET_USERNAME: self._username,
-                    CONF_OWLET_PASSWORD: self._password,
-                    "devices": user_input["socks"],
-                },
-            )
+            return self.async_create_entry(title="", data=user_input)
 
         schema = vol.Schema(
             {
-                vol.Required("socks"): config_validation.multi_select(
-                    {sock: sock for sock in list(self._devices.keys())}
-                ),
+                vol.Required(
+                    CONF_OWLET_POLLINTERVAL,
+                    default=self.config_entry.options.get(CONF_OWLET_POLLINTERVAL),
+                ): vol.All(vol.Coerce(int), vol.Range(min=10)),
             }
         )
 
-        return self.async_show_form(step_id="socks", data_schema=schema, errors=errors)
+        return self.async_show_form(step_id="init", data_schema=schema)
