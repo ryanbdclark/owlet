@@ -15,6 +15,7 @@ from homeassistant.const import (
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     UnitOfTime,
+    UnitOfTemperature,
 )
 
 from .const import DOMAIN
@@ -54,6 +55,14 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
         icon="mdi:leaf",
     ),
     OwletSensorEntityDescription(
+        key="oxygensaturation10a",
+        name="O2 Saturation 10 Minute Average",
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        element="oxygen_10_av",
+        icon="mdi:leaf",
+    ),
+    OwletSensorEntityDescription(
         key="heartrate",
         name="Heart rate",
         native_unit_of_measurement="bpm",
@@ -76,6 +85,14 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.SIGNAL_STRENGTH,
         state_class=SensorStateClass.MEASUREMENT,
         element="signal_strength",
+    ),
+    OwletSensorEntityDescription(
+        key="skintemp",
+        name="Skin Temperature",
+        native_unit_of_measurement=UnitOfTemperature.CELCIUS,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        element="skin_temperature",
     ),
 )
 
@@ -119,6 +136,8 @@ class OwletSensor(OwletBaseEntity, SensorEntity):
                 "heart_rate",
                 "battery_minutes",
                 "oxygen_saturation",
+                "skin_temperature",
+                "oxygen_10_av"
             ]
             and self.sock.properties["charging"]
         ):
