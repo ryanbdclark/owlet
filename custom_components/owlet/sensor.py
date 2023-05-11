@@ -89,7 +89,7 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     OwletSensorEntityDescription(
         key="skintemp",
         name="Skin Temperature",
-        native_unit_of_measurement=UnitOfTemperature.CELCIUS,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         element="skin_temperature",
