@@ -1,5 +1,7 @@
 {
   "name": "Owlet",
-  "hacs": "1.31.1",
+  "hacs": "1.32.1",
   "homeassistant": "2023.04.1",
+  "zip_release": true,
+  "filename": "owlet.zip"
 }
