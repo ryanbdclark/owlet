@@ -5,20 +5,22 @@ import logging
 
 from pyowletapi.api import OwletAPI
 from pyowletapi.sock import Sock
-from pyowletapi.exceptions import OwletAuthenticationError, OwletDevicesError
+from pyowletapi.exceptions import OwletConnectionError
 
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import Platform
+from homeassistant.config_entries import ConfigEntry, ConfigEntryAuthFailed
+from homeassistant.const import (
+    Platform,
+    CONF_REGION,
+    CONF_USERNAME,
+    CONF_PASSWORD,
+    CONF_SCAN_INTERVAL,
+    CONF_API_TOKEN,
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from .const import (
     DOMAIN,
-    CONF_OWLET_REGION,
-    CONF_OWLET_USERNAME,
-    CONF_OWLET_PASSWORD,
-    CONF_OWLET_POLLINTERVAL,
     CONF_OWLET_EXPIRY,
-    CONF_OWLET_TOKEN,
     SUPPORTED_VERSIONS,
 )
 from .coordinator import OwletCoordinator
@@ -33,10 +35,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
 
     owlet_api = OwletAPI(
-        entry.data[CONF_OWLET_REGION],
-        entry.data[CONF_OWLET_USERNAME],
-        entry.data[CONF_OWLET_PASSWORD],
-        entry.data[CONF_OWLET_TOKEN],
+        entry.data[CONF_REGION],
+        entry.data[CONF_USERNAME],
+        entry.data[CONF_PASSWORD],
+        entry.data[CONF_API_TOKEN],
         entry.data[CONF_OWLET_EXPIRY],
         async_get_clientsession(hass),
     )
@@ -45,20 +47,21 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         token = await owlet_api.authenticate()
 
         if token:
-            entry.data[CONF_OWLET_TOKEN] = token[CONF_OWLET_TOKEN]
-            entry.data[CONF_OWLET_EXPIRY] = token[CONF_OWLET_EXPIRY]
+            hass.config_entries.async_update_entry(entry, data={**entry.data, **token})
 
         socks = {
             device["device"]["dsn"]: Sock(owlet_api, device["device"])
             for device in await owlet_api.get_devices(SUPPORTED_VERSIONS)
         }
 
-    except OwletAuthenticationError as err:
-        _LOGGER.error("Login failed %s", err)
-        return False
+    except OwletConnectionError as err:
+        _LOGGER.error("Credentials no longer valid, please setup owlet again")
+        raise ConfigEntryAuthFailed(
+            f"Credentials expired for {entry.data[CONF_USERNAME]}"
+        ) from err
 
     coordinators = [
-        OwletCoordinator(hass, sock, entry.options.get(CONF_OWLET_POLLINTERVAL))
+        OwletCoordinator(hass, sock, entry.options.get(CONF_SCAN_INTERVAL))
         for sock in socks.values()
     ]
 

@@ -8,11 +8,18 @@
           "username": "Email",
           "password": "Password"
         }
+      },
+      "reauth_confirm":{
+        "title": "Reauthentiaction required for Owlet",
+        "data":{
+          "password": "Password"
+        }
       }
     },
     "error": {
       "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
-      "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+      "invalid_email": "Entered email address is incorrect",
+      "invalid_password": "Entered password is incorrect",
       "unknown": "[%key:common::config_flow::error::unknown%]"
     },
     "abort": {

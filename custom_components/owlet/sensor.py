@@ -120,11 +120,9 @@ class OwletSensor(OwletBaseEntity, SensorEntity):
         sensor_description: OwletSensorEntityDescription,
     ) -> None:
         """Initialize the sensor."""
-        self.entity_description = sensor_description
-        self._attr_unique_id = (
-            f"{coordinator.config_entry.entry_id}-{self.entity_description.name}"
-        )
         super().__init__(coordinator)
+        self.entity_description = sensor_description
+        self._attr_unique_id = f"{self.sock.serial}-{self.entity_description.name}"
 
     @property
     def native_value(self):
@@ -137,7 +135,7 @@ class OwletSensor(OwletBaseEntity, SensorEntity):
                 "battery_minutes",
                 "oxygen_saturation",
                 "skin_temperature",
-                "oxygen_10_av"
+                "oxygen_10_av",
             ]
             and self.sock.properties["charging"]
         ):
