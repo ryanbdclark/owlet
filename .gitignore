@@ -152,3 +152,4 @@ cython_debug/
 #.idea/
 
 /custom_components/owlet.zip
+custom_components/owlet/owlet.zip

@@ -5,7 +5,7 @@ from datetime import timedelta
 import logging
 
 from pyowletapi.sock import Sock
-from pyowletapi.exceptions import OwletError
+from pyowletapi.exceptions import OwletError, OwletConnectionError
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
@@ -49,5 +49,5 @@ class OwletCoordinator(DataUpdateCoordinator):
         """Fetch the data from the device."""
         try:
             await self.sock.update_properties()
-        except OwletError as err:
+        except (OwletError, OwletConnectionError) as err:
             raise UpdateFailed(err) from err

@@ -14,7 +14,7 @@ If you have a smart sock 2 and would like to contribute then please do so.
 
 ## Installation
 
-1. Use [HACS](https://hacs.xyz/docs/setup/download), in `HACS > Integrations > Explore & Add Repositories` search for "Owlet". After adding this `https://github.com/RyanClark123/owlet` as a custom repository.
+1. Use [HACS](https://hacs.xyz/docs/setup/download), in `HACS > Integrations > Explore & Add Repositories` search for "Owlet". After adding this `https://github.com/ryanbdclark/owlet` as a custom repository.
 2. Restart Home Assistant.
 3. [![Add Integration][add-integration-badge]][add-integration] or in the HA UI go to "Settings" -> "Devices & Services" then click "+" and search for "Owlet Smart Sock".
 
@@ -36,15 +36,15 @@ This integration provides the following entities:
 
 ---
 
-[commits-shield]: https://img.shields.io/github/commit-activity/w/RyanClark123/owlet?style=for-the-badge
-[commits]: https://github.com/RyanClark123/owlet/commits/main
+[commits-shield]: https://img.shields.io/github/commit-activity/w/ryanbdclark/owlet?style=for-the-badge
+[commits]: https://github.com/ryanbdclark/owlet/commits/main
 [hacs]: https://github.com/hacs/integration
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
 [license]: LICENSE
-[license-shield]: https://img.shields.io/github/license/RyanClark123/owlet.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Ryan%20Clark%20%40RyanClark123-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/RyanClark123/owlet.svg?style=for-the-badge
-[releases]: https://github.com/RyanClark123/owlet/releases
-[user_profile]: https://github.com/RyanClark123
+[license-shield]: https://img.shields.io/github/license/ryanbdclark/owlet.svg?style=for-the-badge
+[maintenance-shield]: https://img.shields.io/badge/maintainer-Ryan%20Clark%20%40ryanbdclark-blue.svg?style=for-the-badge
+[releases-shield]: https://img.shields.io/github/release/ryanbdclark/owlet.svg?style=for-the-badge
+[releases]: https://github.com/ryanbdclark/owlet/releases
+[user_profile]: https://github.com/ryanbdclark
 [add-integration]: https://my.home-assistant.io/redirect/config_flow_start?domain=owlet
 [add-integration-badge]: https://my.home-assistant.io/badges/config_flow_start.svg
