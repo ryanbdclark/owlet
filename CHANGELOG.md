@@ -1,6 +1,12 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2023-05-1 (2023-05-15)
+#### Feature
+* Changed versioning to date based
+### Fix
+* Bumping to pyowletapi 2023.5.21 to fix issue with unawaited authentication call, should resolve issue with refreshing authentication ([`228d54b`](https://github.com/ryanbdclark/owlet/commit/228d54b6414e0b9171064254246d1f36c3af8f5b))
+
 
 ## v1.5.0 (2023-05-12)
 ### Feature
