@@ -32,7 +32,7 @@ This integration provides the following entities:
 
 ## Options
 
-- Seconds between polling - Number of seconds between each call for data from the owlet cloud service, default is 10 seconds.
+- Seconds between polling - Number of seconds between each call for data from the owlet cloud service, default is 5 seconds.
 
 ---
 

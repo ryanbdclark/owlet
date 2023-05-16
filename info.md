@@ -19,8 +19,6 @@ If you have a smart sock 2 and would like to contribute then please do so.
 3. Hard refresh browser cache.
 4. [![Add Integration][add-integration-badge]][add-integration] or in the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Owlet Smart Sock".
 
-{% endif %}
-
 <!---->
 
 ---

@@ -86,6 +86,12 @@ SENSORS: tuple[OwletBinarySensorEntityDescription, ...] = (
         device_class=BinarySensorDeviceClass.POWER,
         element="sock_off",
     ),
+    OwletBinarySensorEntityDescription(
+        key="awake",
+        name="Awake",
+        element="sleep_state",
+        icon="mdi:sleep",
+    ),
 )
 
 
@@ -119,4 +125,14 @@ class OwletBinarySensor(OwletBaseEntity, BinarySensorEntity):
     @property
     def is_on(self) -> bool:
         """Return true if the binary sensor is on."""
-        return self.sock.properties[self.entity_description.element]
+        state = self.sock.properties[self.entity_description.element]
+
+        if self.entity_description.element == "sleep_state":
+            if self.sock.properties["charging"]:
+                return None
+            if state in [8, 15]:
+                state = False
+            else:
+                state = True
+
+        return state

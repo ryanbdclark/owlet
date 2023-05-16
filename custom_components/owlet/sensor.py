@@ -18,7 +18,7 @@ from homeassistant.const import (
     UnitOfTemperature,
 )
 
-from .const import DOMAIN
+from .const import DOMAIN, SLEEP_STATES
 from .coordinator import OwletCoordinator
 from .entity import OwletBaseEntity
 
@@ -107,6 +107,7 @@ async def async_setup_entry(
     coordinator: OwletCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     entities = [OwletSensor(coordinator, sensor) for sensor in SENSORS]
+    entities.append(OwletSleepStateSensor(coordinator))
 
     async_add_entities(entities)
 
@@ -142,3 +143,31 @@ class OwletSensor(OwletBaseEntity, SensorEntity):
             return None
 
         return self.sock.properties[self.entity_description.element]
+
+
+class OwletSleepStateSensor(OwletBaseEntity, SensorEntity):
+    """Representation of an Owlet sleep state sensor."""
+
+    def __init__(
+        self,
+        coordinator: OwletCoordinator,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{self.sock.serial}-Sleep State"
+        self._attr_icon = "mdi:sleep"
+        self._attr_device_class = SensorDeviceClass.ENUM
+        self._attr_translation_key = "sleepstate"
+        self._attr_name = "Sleep State"
+
+    @property
+    def native_value(self):
+        """Return sensor value"""
+        if self.sock.properties["charging"]:
+            return None
+
+        return SLEEP_STATES[self.sock.properties["sleep_state"]]
+
+    @property
+    def options(self) -> list[str]:
+        return ["Awake", "Light Sleep", "Deep Sleep"]
