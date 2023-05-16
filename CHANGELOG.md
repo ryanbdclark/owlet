@@ -1,6 +1,11 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2023-05-2 (2023-05-16)
+#### Feature
+* Integration now makes use of refresh token from pyowletapi to reauthenticate, user password in no longer stored by integration ([`dc710a1`](https://github.com/ryanbdclark/owlet/commit/dc710a1783a4cad9d6cf355240fe12ac779a87ef))
+* New sensors create for baby sleep state ([`9b3392b`](https://github.com/ryanbdclark/owlet/commit/9b3392bdbcd82015ed31d3a50a517e4e22905684))
+
 ## 2023-05-1 (2023-05-15)
 #### Feature
 * Changed versioning to date based
