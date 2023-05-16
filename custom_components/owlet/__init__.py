@@ -5,7 +5,7 @@ import logging
 
 from pyowletapi.api import OwletAPI
 from pyowletapi.sock import Sock
-from pyowletapi.exceptions import OwletConnectionError
+from pyowletapi.exceptions import OwletAuthenticationError
 
 from homeassistant.config_entries import ConfigEntry, ConfigEntryAuthFailed
 from homeassistant.const import (
@@ -21,6 +21,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from .const import (
     DOMAIN,
     CONF_OWLET_EXPIRY,
+    CONF_OWLET_REFRESH,
     SUPPORTED_VERSIONS,
 )
 from .coordinator import OwletCoordinator
@@ -35,12 +36,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
 
     owlet_api = OwletAPI(
-        entry.data[CONF_REGION],
-        entry.data[CONF_USERNAME],
-        entry.data[CONF_PASSWORD],
-        entry.data[CONF_API_TOKEN],
-        entry.data[CONF_OWLET_EXPIRY],
-        async_get_clientsession(hass),
+        region=entry.data[CONF_REGION],
+        token=entry.data[CONF_API_TOKEN],
+        expiry=entry.data[CONF_OWLET_EXPIRY],
+        refresh=entry.data[CONF_OWLET_REFRESH],
+        session=async_get_clientsession(hass),
     )
 
     try:
@@ -54,7 +54,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             for device in await owlet_api.get_devices(SUPPORTED_VERSIONS)
         }
 
-    except OwletConnectionError as err:
+    except OwletAuthenticationError as err:
         _LOGGER.error("Credentials no longer valid, please setup owlet again")
         raise ConfigEntryAuthFailed(
             f"Credentials expired for {entry.data[CONF_USERNAME]}"

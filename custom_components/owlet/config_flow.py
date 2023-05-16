@@ -32,6 +32,7 @@ from .const import (
     CONF_OWLET_EXPIRY,
     POLLING_INTERVAL,
     SUPPORTED_VERSIONS,
+    CONF_OWLET_REFRESH,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -87,9 +88,9 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         data={
                             CONF_REGION: self._region,
                             CONF_USERNAME: self._username,
-                            CONF_PASSWORD: self._password,
                             CONF_API_TOKEN: token[CONF_API_TOKEN],
                             CONF_OWLET_EXPIRY: token[CONF_OWLET_EXPIRY],
+                            CONF_OWLET_REFRESH: token[CONF_OWLET_REFRESH],
                         },
                         options={CONF_SCAN_INTERVAL: POLLING_INTERVAL},
                     )
@@ -139,6 +140,7 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 if token:
                     user_input[CONF_API_TOKEN] = token[CONF_API_TOKEN]
                     user_input[CONF_OWLET_EXPIRY] = token[CONF_OWLET_EXPIRY]
+                    user_input[CONF_OWLET_REFRESH] = token[CONF_OWLET_REFRESH]
                 self.hass.config_entries.async_update_entry(
                     self.reauth_entry, data={**entry_data, **user_input}
                 )

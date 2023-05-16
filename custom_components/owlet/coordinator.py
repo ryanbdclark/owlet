@@ -5,16 +5,18 @@ from datetime import timedelta
 import logging
 
 from pyowletapi.sock import Sock
-from pyowletapi.exceptions import OwletError, OwletConnectionError
+from pyowletapi.exceptions import (
+    OwletError,
+    OwletConnectionError,
+    OwletAuthenticationError,
+)
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.const import CONF_API_TOKEN
 
-from .const import (
-    DOMAIN,
-    MANUFACTURER,
-)
+from .const import DOMAIN, MANUFACTURER, CONF_OWLET_EXPIRY, CONF_OWLET_REFRESH
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -49,5 +51,16 @@ class OwletCoordinator(DataUpdateCoordinator):
         """Fetch the data from the device."""
         try:
             await self.sock.update_properties()
-        except (OwletError, OwletConnectionError) as err:
+            tokens = await self.sock.api.tokens_changed(
+                {
+                    CONF_API_TOKEN: self.config_entry.data[CONF_API_TOKEN],
+                    CONF_OWLET_EXPIRY: self.config_entry.data[CONF_OWLET_EXPIRY],
+                    CONF_OWLET_REFRESH: self.config_entry.data[CONF_OWLET_REFRESH],
+                }
+            )
+            if tokens:
+                self.hass.config_entries.async_update_entry(
+                    self.config_entry, data={**self.config_entry.data, **tokens}
+                )
+        except (OwletError, OwletConnectionError, OwletAuthenticationError) as err:
             raise UpdateFailed(err) from err
