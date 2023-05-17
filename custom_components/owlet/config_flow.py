@@ -138,12 +138,9 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 token = await owlet_api.authenticate()
                 if token:
-                    user_input[CONF_API_TOKEN] = token[CONF_API_TOKEN]
-                    user_input[CONF_OWLET_EXPIRY] = token[CONF_OWLET_EXPIRY]
-                    user_input[CONF_OWLET_REFRESH] = token[CONF_OWLET_REFRESH]
-                self.hass.config_entries.async_update_entry(
-                    self.reauth_entry, data={**entry_data, **user_input}
-                )
+                    self.hass.config_entries.async_update_entry(
+                        self.reauth_entry, data={**entry_data, **token}
+                    )
 
                 await self.hass.config_entries.async_reload(self.reauth_entry.entry_id)
 

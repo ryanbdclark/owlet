@@ -1,6 +1,11 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2023-05-3 (2023-05-17)
+#### Fix
+* Bumping to pyowletapi 2023.5.24
+* Reauthing now no longer re adds users' password to config entry
+
 ## 2023-05-2 (2023-05-16)
 #### Feature
 * Integration now makes use of refresh token from pyowletapi to reauthenticate, user password in no longer stored by integration ([`dc710a1`](https://github.com/ryanbdclark/owlet/commit/dc710a1783a4cad9d6cf355240fe12ac779a87ef))

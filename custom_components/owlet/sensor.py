@@ -170,4 +170,4 @@ class OwletSleepStateSensor(OwletBaseEntity, SensorEntity):
 
     @property
     def options(self) -> list[str]:
-        return ["Awake", "Light Sleep", "Deep Sleep"]
+        return SLEEP_STATES.values()
