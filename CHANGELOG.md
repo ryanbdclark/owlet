@@ -1,6 +1,10 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2023-05-4 (2023-05-17)
+#### Fix
+* Bumping to pyowletapi 2023.5.25
+
 ## 2023-05-3 (2023-05-17)
 #### Fix
 * Bumping to pyowletapi 2023.5.24
