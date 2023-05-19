@@ -49,9 +49,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         if token:
             hass.config_entries.async_update_entry(entry, data={**entry.data, **token})
 
+        devices = await owlet_api.get_devices(SUPPORTED_VERSIONS)
+
+        if devices["tokens"]:
+            hass.config_entries.async_update_entry(
+                entry, data={**entry.data, **devices["tokens"]}
+            )
+
         socks = {
             device["device"]["dsn"]: Sock(owlet_api, device["device"])
-            for device in await owlet_api.get_devices(SUPPORTED_VERSIONS)
+            for device in devices["response"]
         }
 
     except OwletAuthenticationError as err:

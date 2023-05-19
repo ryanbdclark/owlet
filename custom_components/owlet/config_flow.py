@@ -31,7 +31,6 @@ from .const import (
     DOMAIN,
     CONF_OWLET_EXPIRY,
     POLLING_INTERVAL,
-    SUPPORTED_VERSIONS,
     CONF_OWLET_REFRESH,
 )
 
@@ -70,9 +69,9 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self._password = user_input[CONF_PASSWORD]
 
             owlet_api = OwletAPI(
-                self._region,
-                self._username,
-                self._password,
+                region=self._region,
+                user=self._username,
+                password=self._password,
                 session=async_get_clientsession(self.hass),
             )
 
@@ -82,7 +81,7 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 token = await owlet_api.authenticate()
                 try:
-                    await owlet_api.get_devices(SUPPORTED_VERSIONS)
+                    await owlet_api.validate_authentication()
                     return self.async_create_entry(
                         title=self._username,
                         data={
