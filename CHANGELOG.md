@@ -3,7 +3,7 @@
 <!--next-version-placeholder-->
 ## 2023.05.5 (2023-05-19)
 #### Fix
-* Owlet refresh token becomes invalid after 24 hours. Meant that after 1 day the integration would stop working. Moved to pyowletapi v2023.5.28 which uses different refresh token, should no longer need reconfiguring after 24 hours
+* Owlet refresh token becomes invalid after 24 hours. Meant that after 1 day the integration would stop working. Moved to pyowletapi v2023.5.28 which uses different refresh token, should no longer need reconfiguring after 24 hours ([`dc58b19`](https://github.com/ryanbdclark/owlet/commit/0141f7d01a9ac9b3e1dcc74cabb896e19bd4a821))
 
 ## 2023.05.4 (2023-05-17)
 #### Fix
