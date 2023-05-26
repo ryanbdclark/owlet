@@ -1,5 +1,6 @@
-"""Support for Android IP Webcam binary sensors."""
+"""Support for Owlet sensors."""
 from __future__ import annotations
+
 from dataclasses import dataclass
 
 from homeassistant.components.sensor import (
@@ -9,14 +10,15 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.const import (
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
-    UnitOfTime,
     UnitOfTemperature,
+    UnitOfTime,
 )
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.typing import StateType
 
 from .const import DOMAIN, SLEEP_STATES
 from .coordinator import OwletCoordinator
@@ -80,7 +82,7 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     ),
     OwletSensorEntityDescription(
         key="signalstrength",
-        name="Singal Strength",
+        name="Signal Strength",
         native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
         device_class=SensorDeviceClass.SIGNAL_STRENGTH,
         state_class=SensorStateClass.MEASUREMENT,
@@ -126,7 +128,7 @@ class OwletSensor(OwletBaseEntity, SensorEntity):
         self._attr_unique_id = f"{self.sock.serial}-{self.entity_description.name}"
 
     @property
-    def native_value(self):
+    def native_value(self) -> StateType:
         """Return sensor value"""
 
         if (
@@ -142,7 +144,9 @@ class OwletSensor(OwletBaseEntity, SensorEntity):
         ):
             return None
 
-        return self.sock.properties[self.entity_description.element]
+        properties = self.sock.properties
+
+        return properties[self.entity_description.element]
 
 
 class OwletSleepStateSensor(OwletBaseEntity, SensorEntity):
@@ -161,7 +165,7 @@ class OwletSleepStateSensor(OwletBaseEntity, SensorEntity):
         self._attr_name = "Sleep State"
 
     @property
-    def native_value(self):
+    def native_value(self) -> str:
         """Return sensor value"""
         if self.sock.properties["charging"]:
             return None

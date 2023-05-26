@@ -5,34 +5,24 @@ import logging
 from typing import Any
 
 from pyowletapi.api import OwletAPI
+from pyowletapi.exceptions import OwletDevicesError, OwletEmailError, OwletPasswordError
 from pyowletapi.sock import Sock
-from pyowletapi.exceptions import (
-    OwletDevicesError,
-    OwletEmailError,
-    OwletPasswordError,
-)
-
 import voluptuous as vol
 
 from homeassistant import config_entries, exceptions
-from homeassistant.data_entry_flow import FlowResult
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.core import callback
 from homeassistant.const import (
-    CONF_REGION,
-    CONF_USERNAME,
-    CONF_PASSWORD,
-    CONF_SCAN_INTERVAL,
     CONF_API_TOKEN,
+    CONF_PASSWORD,
+    CONF_REGION,
+    CONF_SCAN_INTERVAL,
+    CONF_USERNAME,
 )
+from homeassistant.core import callback
+from homeassistant.data_entry_flow import FlowResult
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import (
-    DOMAIN,
-    CONF_OWLET_EXPIRY,
-    POLLING_INTERVAL,
-    CONF_OWLET_REFRESH,
-)
+from .const import CONF_OWLET_EXPIRY, CONF_OWLET_REFRESH, DOMAIN, POLLING_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -110,18 +100,22 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     @staticmethod
     @callback
-    def async_get_options_flow(config_entry):
+    def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlowHandler:
         """Get the options flow for this handler."""
         return OptionsFlowHandler(config_entry)
 
-    async def async_step_reauth(self, user_input=None):
+    async def async_step_reauth(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
         """Handle reauth"""
         self.reauth_entry = self.hass.config_entries.async_get_entry(
             self.context["entry_id"]
         )
         return await self.async_step_reauth_confirm()
 
-    async def async_step_reauth_confirm(self, user_input=None):
+    async def async_step_reauth_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
         """Dialog that informs the user that reauth is required"""
         assert self.reauth_entry is not None
         errors: dict[str, str] = {}
@@ -145,12 +139,10 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
                 return self.async_abort(reason="reauth_successful")
 
-            except OwletEmailError:
-                errors["base"] = "invalid_email"
             except OwletPasswordError:
                 errors["base"] = "invalid_password"
             except Exception:  # pylint: disable=broad-except
-                _LOGGER.exception("error reauthing")
+                _LOGGER.exception("Error reauthenticating")
 
         return self.async_show_form(
             step_id="reauth_confirm",
@@ -162,11 +154,13 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class OptionsFlowHandler(config_entries.OptionsFlow):
     """Handle a options flow for owlet"""
 
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+    def __init__(self, config_entry: ConfigEntry) -> None:
         """Initialise options flow"""
         self.config_entry = config_entry
 
-    async def async_step_init(self, user_input=None):
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
         """Handle options flow"""
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)

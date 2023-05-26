@@ -1,19 +1,24 @@
-"""Owlet integration."""
+"""Owlet integration coordinator class."""
 from __future__ import annotations
 
 from datetime import timedelta
 import logging
 
-from pyowletapi.sock import Sock
 from pyowletapi.exceptions import (
-    OwletError,
-    OwletConnectionError,
     OwletAuthenticationError,
+    OwletConnectionError,
+    OwletError,
 )
+from pyowletapi.sock import Sock
 
+from homeassistant.const import CONF_EMAIL
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.helpers.update_coordinator import (
+    ConfigEntryAuthFailed,
+    DataUpdateCoordinator,
+    UpdateFailed,
+)
 
 from .const import DOMAIN, MANUFACTURER
 
@@ -55,5 +60,9 @@ class OwletCoordinator(DataUpdateCoordinator):
                     self.config_entry,
                     data={**self.config_entry.data, **properties["tokens"]},
                 )
-        except (OwletError, OwletConnectionError, OwletAuthenticationError) as err:
+        except OwletAuthenticationError as err:
+            raise ConfigEntryAuthFailed(
+                f"Authentication failed for {self.config_entry.data[CONF_EMAIL]}"
+            ) from err
+        except (OwletError, OwletConnectionError) as err:
             raise UpdateFailed(err) from err

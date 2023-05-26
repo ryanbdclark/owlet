@@ -1,16 +1,11 @@
 {
   "domain": "owlet",
   "name": "Owlet Smart Sock",
-  "codeowners": [
-    "@ryanbdclark"
-  ],
+  "codeowners": ["@ryanbdclark"],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://www.home-assistant.io/integrations/owlet",
   "homekit": {},
   "iot_class": "cloud_polling",
-  "requirements": [
-    "pyowletapi==2023.5.28"
-  ],
-  "version":"2023.5.5"
+  "requirements": ["pyowletapi==2023.5.28"]
 }
