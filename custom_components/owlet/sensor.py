@@ -27,7 +27,7 @@ from .entity import OwletBaseEntity
 
 @dataclass
 class OwletSensorEntityDescriptionMixin:
-    """Owlet sensor description mix in"""
+    """Owlet sensor description mix in."""
 
     element: str
 
@@ -42,7 +42,7 @@ class OwletSensorEntityDescription(
 SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     OwletSensorEntityDescription(
         key="batterypercentage",
-        name="Battery",
+        translation_key="batterypercent",
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.BATTERY,
         state_class=SensorStateClass.MEASUREMENT,
@@ -50,7 +50,7 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     ),
     OwletSensorEntityDescription(
         key="oxygensaturation",
-        name="O2 Saturation",
+        translation_key="o2saturation",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         element="oxygen_saturation",
@@ -58,7 +58,7 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     ),
     OwletSensorEntityDescription(
         key="oxygensaturation10a",
-        name="O2 Saturation 10 Minute Average",
+        translation_key="o2saturation10a",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         element="oxygen_10_av",
@@ -66,7 +66,7 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     ),
     OwletSensorEntityDescription(
         key="heartrate",
-        name="Heart rate",
+        translation_key="heartrate",
         native_unit_of_measurement="bpm",
         state_class=SensorStateClass.MEASUREMENT,
         element="heart_rate",
@@ -74,7 +74,7 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     ),
     OwletSensorEntityDescription(
         key="batteryminutes",
-        name="Battery Remaining",
+        translation_key="batterymin",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.MEASUREMENT,
@@ -82,7 +82,7 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     ),
     OwletSensorEntityDescription(
         key="signalstrength",
-        name="Signal Strength",
+        translation_key="signalstrength",
         native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
         device_class=SensorDeviceClass.SIGNAL_STRENGTH,
         state_class=SensorStateClass.MEASUREMENT,
@@ -90,7 +90,7 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     ),
     OwletSensorEntityDescription(
         key="skintemp",
-        name="Skin Temperature",
+        translation_key="skintemp",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -106,12 +106,19 @@ async def async_setup_entry(
 ) -> None:
     """Set up the owlet sensors from config entry."""
 
-    coordinator: OwletCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    coordinators: list[OwletCoordinator] = list(
+        hass.data[DOMAIN][config_entry.entry_id].values()
+    )
 
-    entities = [OwletSensor(coordinator, sensor) for sensor in SENSORS]
-    entities.append(OwletSleepStateSensor(coordinator))
+    async_add_entities(
+        OwletSensor(coordinator, sensor)
+        for coordinator in coordinators
+        for sensor in SENSORS
+    )
 
-    async_add_entities(entities)
+    async_add_entities(
+        OwletSleepStateSensor(coordinator) for coordinator in coordinators
+    )
 
 
 class OwletSensor(OwletBaseEntity, SensorEntity):
@@ -124,12 +131,14 @@ class OwletSensor(OwletBaseEntity, SensorEntity):
     ) -> None:
         """Initialize the sensor."""
         super().__init__(coordinator)
-        self.entity_description = sensor_description
-        self._attr_unique_id = f"{self.sock.serial}-{self.entity_description.name}"
+        self.entity_description: OwletSensorEntityDescription = sensor_description
+        self._attr_unique_id = (
+            f"{self.sock.serial}-{self.entity_description.translation_key}"
+        )
 
     @property
     def native_value(self) -> StateType:
-        """Return sensor value"""
+        """Return sensor value."""
 
         if (
             self.entity_description.element
@@ -158,20 +167,20 @@ class OwletSleepStateSensor(OwletBaseEntity, SensorEntity):
     ) -> None:
         """Initialize the sensor."""
         super().__init__(coordinator)
-        self._attr_unique_id = f"{self.sock.serial}-Sleep State"
+        self._attr_unique_id = f"{self.sock.serial}-sleepstate"
         self._attr_icon = "mdi:sleep"
         self._attr_device_class = SensorDeviceClass.ENUM
         self._attr_translation_key = "sleepstate"
-        self._attr_name = "Sleep State"
 
     @property
     def native_value(self) -> str:
-        """Return sensor value"""
+        """Return sensor value."""
         if self.sock.properties["charging"]:
-            return None
+            return "unknown"
 
         return SLEEP_STATES[self.sock.properties["sleep_state"]]
 
     @property
     def options(self) -> list[str]:
+        """Set options for sleep state."""
         return list(SLEEP_STATES.values())

@@ -1,11 +1,17 @@
 """Config flow for Owlet Smart Sock integration."""
 from __future__ import annotations
 
+from collections.abc import Mapping
 import logging
 from typing import Any
 
 from pyowletapi.api import OwletAPI
-from pyowletapi.exceptions import OwletDevicesError, OwletEmailError, OwletPasswordError
+from pyowletapi.exceptions import (
+    OwletCredentialsError,
+    OwletDevicesError,
+    OwletEmailError,
+    OwletPasswordError,
+)
 from pyowletapi.sock import Sock
 import voluptuous as vol
 
@@ -41,6 +47,7 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     def __init__(self) -> None:
+        """Initialise config flow."""
         self._entry: ConfigEntry
         self._region: str
         self._username: str
@@ -70,29 +77,31 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
             try:
                 token = await owlet_api.authenticate()
-                try:
-                    await owlet_api.validate_authentication()
-                    return self.async_create_entry(
-                        title=self._username,
-                        data={
-                            CONF_REGION: self._region,
-                            CONF_USERNAME: self._username,
-                            CONF_API_TOKEN: token[CONF_API_TOKEN],
-                            CONF_OWLET_EXPIRY: token[CONF_OWLET_EXPIRY],
-                            CONF_OWLET_REFRESH: token[CONF_OWLET_REFRESH],
-                        },
-                        options={CONF_SCAN_INTERVAL: POLLING_INTERVAL},
-                    )
-                except OwletDevicesError:
-                    errors["base"] = "no_devices"
+                await owlet_api.validate_authentication()
 
+            except OwletDevicesError:
+                errors["base"] = "no_devices"
             except OwletEmailError:
                 errors["base"] = "invalid_email"
             except OwletPasswordError:
                 errors["base"] = "invalid_password"
+            except OwletCredentialsError:
+                errors["base"] = "invalid_credentials"
             except Exception:  # pylint: disable=broad-except
                 _LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"
+            else:
+                return self.async_create_entry(
+                    title=self._username,
+                    data={
+                        CONF_REGION: self._region,
+                        CONF_USERNAME: self._username,
+                        CONF_API_TOKEN: token[CONF_API_TOKEN],
+                        CONF_OWLET_EXPIRY: token[CONF_OWLET_EXPIRY],
+                        CONF_OWLET_REFRESH: token[CONF_OWLET_REFRESH],
+                    },
+                    options={CONF_SCAN_INTERVAL: POLLING_INTERVAL},
+                )
 
         return self.async_show_form(
             step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
@@ -104,10 +113,8 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Get the options flow for this handler."""
         return OptionsFlowHandler(config_entry)
 
-    async def async_step_reauth(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
-        """Handle reauth"""
+    async def async_step_reauth(self, user_input: Mapping[str, Any]) -> FlowResult:
+        """Handle reauth."""
         self.reauth_entry = self.hass.config_entries.async_get_entry(
             self.context["entry_id"]
         )
@@ -116,7 +123,7 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_reauth_confirm(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Dialog that informs the user that reauth is required"""
+        """Dialog that informs the user that reauth is required."""
         assert self.reauth_entry is not None
         errors: dict[str, str] = {}
 
@@ -152,16 +159,16 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 class OptionsFlowHandler(config_entries.OptionsFlow):
-    """Handle a options flow for owlet"""
+    """Handle a options flow for owlet."""
 
     def __init__(self, config_entry: ConfigEntry) -> None:
-        """Initialise options flow"""
+        """Initialise options flow."""
         self.config_entry = config_entry
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Handle options flow"""
+        """Handle options flow."""
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)
 
@@ -178,4 +185,4 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 
 
 class InvalidAuth(exceptions.HomeAssistantError):
-    """Error to indiciate there is invalud auth"""
+    """Error to indicate there is invalid auth."""
