@@ -2,14 +2,14 @@
 
 <!--next-version-placeholder-->
 ## 2023.05.6 (2023-05-30)
-###Fix
-# In light of submitting this as a pull request to the core of HA there have been some refactoring changes to comply with HA's style requirements
-#Sensor names now moved to strings file to allow for translations
-#Coordinator now properly handles multiple devices
-#Spelling of signal strength sensor corrected
+### Fix
+* In light of submitting this as a pull request to the core of HA there have been some refactoring changes to comply with HA's style requirements
+* Sensor names now moved to strings file to allow for translations
+* Coordinator now properly handles multiple devices
+* Spelling of signal strength sensor corrected
 
-###Feature
-#Tests added
+### Feature
+* Tests added
 
 ## 2023.05.5 (2023-05-19)
 #### Fix
