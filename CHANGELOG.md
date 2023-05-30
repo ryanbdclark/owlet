@@ -1,6 +1,10 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2023.05.7 (2023-05-30)
+### Fix
+* Fixed issue with binary sensors not loading, caused by change to way the coordinators are stored ([`8d17317`](https://github.com/ryanbdclark/owlet/commit/8d173174e286b0451cbb2c0d4ae3087028d1ea23))
+
 ## 2023.05.6 (2023-05-30)
 ### Fix
 * In light of submitting this as a pull request to the core of HA there have been some refactoring changes to comply with HA's style requirements
