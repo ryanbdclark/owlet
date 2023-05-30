@@ -102,7 +102,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up the owlet sensors from config entry."""
 
-    coordinators: OwletCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    coordinators: OwletCoordinator = hass.data[DOMAIN][config_entry.entry_id].values()
 
     async_add_entities(
         OwletBinarySensor(coordinator, sensor)
