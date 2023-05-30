@@ -102,11 +102,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up the owlet sensors from config entry."""
 
-    coordinator: OwletCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    coordinators: OwletCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
-    entities = [OwletBinarySensor(coordinator, sensor) for sensor in SENSORS]
-
-    async_add_entities(entities)
+    async_add_entities(
+        OwletBinarySensor(coordinator, sensor)
+        for coordinator in coordinators
+        for sensor in SENSORS
+    )
 
 
 class OwletBinarySensor(OwletBaseEntity, BinarySensorEntity):
