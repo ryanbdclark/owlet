@@ -122,7 +122,7 @@ class OwletBinarySensor(OwletBaseEntity, BinarySensorEntity):
         """Initialize the binary sensor."""
         super().__init__(coordinator)
         self.entity_description = sensor_description
-        self._attr_unique_id = f"{self.sock.serial}-{self.entity_description.name}"
+        self._attr_unique_id = f"{self.sock.serial}-{self.entity_description.translation_key}"
 
     @property
     def is_on(self) -> bool:

@@ -65,7 +65,7 @@
         "name": "Sock Diconnected Alert"
       },
       "sock_off":{
-        "name":"sock_off"
+        "name":"Sock Off"
       },
       "awake":{
         "name":"Awake"
