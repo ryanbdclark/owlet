@@ -1,6 +1,10 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2023.7.1 (2023-07-03)
+### Fix
+*  Bumping pyowletapi to 2023.7.1 ([`c693fef`](https://github.com/ryanbdclark/owlet/commit/c693fefbf3dba8f35802b87d064401dadbb211b5))
+  
 ## 2023.05.7 (2023-05-30)
 ### Fix
 * Fixed issue with binary sensors not loading, caused by change to way the coordinators are stored ([`8d17317`](https://github.com/ryanbdclark/owlet/commit/8d173174e286b0451cbb2c0d4ae3087028d1ea23))
