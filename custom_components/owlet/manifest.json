@@ -6,6 +6,6 @@
   "documentation": "https://www.home-assistant.io/integrations/owlet",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/ryanbdclark/owlet/issues",
-  "requirements": ["pyowletapi==2023.5.30"],
+  "requirements": ["pyowletapi==2023.07.01"],
   "version":"2023.5.7"
 }
