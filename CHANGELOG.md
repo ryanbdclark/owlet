@@ -1,6 +1,10 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2023.7.2 (2023-07-04)
+### Fix
+* Bumping pyowletapi version to 2023.7.2 ([`c45959b`](https://github.com/ryanbdclark/owlet/commit/c45959b123a6e5f77747475f11d3d3ab67859756))
+
 ## 2023.7.1 (2023-07-03)
 ### Fix
 *  Bumping pyowletapi to 2023.7.1 ([`c693fef`](https://github.com/ryanbdclark/owlet/commit/c693fefbf3dba8f35802b87d064401dadbb211b5))
