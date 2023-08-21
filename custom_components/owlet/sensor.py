@@ -96,6 +96,20 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         element="skin_temperature",
     ),
+    OwletSensorEntityDescription(
+        key="movement",
+        translation_key="movement",
+        state_class=SensorStateClass.MEASUREMENT,
+        element="movement",
+        icon="mdi:cursor-move",
+    ),
+    OwletSensorEntityDescription(
+        key="movementbucket",
+        translation_key="movementbucket",
+        state_class=SensorStateClass.MEASUREMENT,
+        element="movement_bucket",
+        icon="mdi:bucket-outline",
+    ),
 )
 
 
