@@ -2,7 +2,6 @@
   "config": {
     "step": {
       "user": {
-        "title": "Enter login details",
         "data": {
           "region": "Region",
           "username": "Email",
@@ -39,68 +38,74 @@
     }
   },
   "entity": {
-    "binary_sensor":{
+    "binary_sensor": {
       "charging": {
         "name": "Charging"
       },
-      "high_hr_alrt":{
-        "name": "High Heart Rate Alert"
+      "high_hr_alrt": {
+        "name": "High heart rate alert"
       },
-      "low_hr_alrt":{
-        "name":"Low Heart Rate Alert"
+      "low_hr_alrt": {
+        "name": "Low heart rate alert"
       },
-      "high_ox_alrt":{
-        "name":"High Oxygen Alert"
+      "high_ox_alrt": {
+        "name": "High oxygen alert"
       },
-      "low_ox_alrt":{
-        "name":"Low Oxygen Alert"
+      "low_ox_alrt": {
+        "name": "Low oxygen alert"
       },
-      "low_batt_alrt":{
-        "name": "Low Battery Alert"
+      "low_batt_alrt": {
+        "name": "Low battery alert"
       },
-      "lost_pwr_alrt":{
-        "name": "Lost Power Alert"
+      "lost_pwr_alrt": {
+        "name": "Lost power alert"
       },
-      "sock_discon_alrt":{
-        "name": "Sock Diconnected Alert"
+      "sock_discon_alrt": {
+        "name": "Sock diconnected alert"
       },
-      "sock_off":{
-        "name":"Sock Off"
+      "sock_off": {
+        "name": "Sock off"
       },
-      "awake":{
-        "name":"Awake"
+      "awake": {
+        "name": "Awake"
       }
     },
     "sensor": {
       "batterypercent": {
-        "name": "Battery Percentage"
-      },
-      "o2saturation": {
-        "name": "O2 Saturation"
-      },
-      "o2saturation10a": {
-        "name": "O2 Saturation 10 Minute Average"
-      },
-      "heartrate": {
-        "name": "Heart Rate"
-      },
-      "batterymin": {
-        "name": "Battery Remaining"
+        "name": "Battery percentage"
       },
       "signalstrength": {
-        "name": "Signal Strength"
+        "name": "Signal strength"
+      },
+      "o2saturation": {
+        "name": "O2 saturation"
+      },
+      "o2saturation10a": {
+        "name": "O2 saturation 10 minute average"
+      },
+      "heartrate": {
+        "name": "Heart rate"
+      },
+      "batterymin": {
+        "name": "Battery remaining"
       },
       "skintemp": {
-        "name": "Skin Temperature"
+        "name": "Skin temperature"
       },
       "sleepstate": {
-        "name": "Sleep State",
+        "name": "Sleep state",
         "state": {
           "unknown": "Unknown",
           "awake": "Awake",
-          "light_sleep": "Light Sleep",
-          "deep_sleep": "Deep Sleep"
+          "light_sleep": "Light sleep",
+          "deep_sleep": "Deep sleep"
         }
+      },
+      "movement": {
+        "name": "Movement"
+      },
+      "movementbucket": {
+        "name": "Movement bucket"
       }
     }
   }

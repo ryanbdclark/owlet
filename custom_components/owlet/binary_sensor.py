@@ -18,16 +18,7 @@ from .entity import OwletBaseEntity
 
 
 @dataclass
-class OwletBinarySensorEntityMixin:
-    """Owlet binary sensor element mixin"""
-
-    element: str
-
-
-@dataclass
-class OwletBinarySensorEntityDescription(
-    BinarySensorEntityDescription, OwletBinarySensorEntityMixin
-):
+class OwletBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Represent the owlet binary sensor entity description."""
 
 
@@ -36,60 +27,51 @@ SENSORS: tuple[OwletBinarySensorEntityDescription, ...] = (
         key="charging",
         translation_key="charging",
         device_class=BinarySensorDeviceClass.BATTERY_CHARGING,
-        element="charging",
     ),
     OwletBinarySensorEntityDescription(
-        key="highhr",
+        key="high_heart_rate_alert",
         translation_key="high_hr_alrt",
         device_class=BinarySensorDeviceClass.SOUND,
-        element="high_heart_rate_alert",
     ),
     OwletBinarySensorEntityDescription(
-        key="lowhr",
+        key="low_heart_rate_alert",
         translation_key="low_hr_alrt",
         device_class=BinarySensorDeviceClass.SOUND,
-        element="low_heart_rate_alert",
     ),
     OwletBinarySensorEntityDescription(
-        key="higho2",
+        key="high_oxygen_alert",
         translation_key="high_ox_alrt",
         device_class=BinarySensorDeviceClass.SOUND,
-        element="high_oxygen_alert",
+        entity_registry_enabled_default=False,
     ),
     OwletBinarySensorEntityDescription(
-        key="lowo2",
+        key="low_oxygen_alert",
         translation_key="low_ox_alrt",
         device_class=BinarySensorDeviceClass.SOUND,
-        element="low_oxygen_alert",
     ),
     OwletBinarySensorEntityDescription(
-        key="lowbattery",
+        key="low_battery_alert",
         translation_key="low_batt_alrt",
         device_class=BinarySensorDeviceClass.SOUND,
-        element="low_battery_alert",
     ),
     OwletBinarySensorEntityDescription(
-        key="lostpower",
+        key="lost_power_alert",
         translation_key="lost_pwr_alrt",
         device_class=BinarySensorDeviceClass.SOUND,
-        element="lost_power_alert",
     ),
     OwletBinarySensorEntityDescription(
-        key="sockdisconnected",
+        key="sock_disconnected",
         translation_key="sock_discon_alrt",
         device_class=BinarySensorDeviceClass.SOUND,
-        element="sock_disconnected",
     ),
     OwletBinarySensorEntityDescription(
         key="sock_off",
         translation_key="sock_off",
         device_class=BinarySensorDeviceClass.POWER,
-        element="sock_off",
     ),
     OwletBinarySensorEntityDescription(
-        key="awake",
+        key="sleep_state",
         translation_key="awake",
-        element="sleep_state",
         icon="mdi:sleep",
     ),
 )
@@ -117,21 +99,24 @@ class OwletBinarySensor(OwletBaseEntity, BinarySensorEntity):
     def __init__(
         self,
         coordinator: OwletCoordinator,
-        sensor_description: OwletBinarySensorEntityDescription,
+        description: OwletBinarySensorEntityDescription,
     ) -> None:
         """Initialize the binary sensor."""
         super().__init__(coordinator)
-        self.entity_description = sensor_description
-        self._attr_unique_id = f"{self.sock.serial}-{self.entity_description.translation_key}"
+        self.entity_description = description
+        self._attr_unique_id = f"{self.sock.serial}-{description.key}"
 
     @property
     def is_on(self) -> bool:
         """Return true if the binary sensor is on."""
-        state = self.sock.properties[self.entity_description.element]
+        state = self.sock.properties[self.entity_description.key]
 
-        if self.entity_description.element == "sleep_state":
-            if self.sock.properties["charging"]:
-                return None
+        entity = self.entity_description.key
+
+        if self.sock.properties["charging"] and entity in ["sleep_state"]:
+            return None
+
+        if entity == "sleep_state":
             if state in [8, 15]:
                 state = False
             else:
