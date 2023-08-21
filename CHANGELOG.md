@@ -1,6 +1,14 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2023.08.1 (2023-08-21)
+### Feature
+* 2 new sensors, movement and movement bucket disabled by default, thanks [`@seanford`](https://github.com/seanford) ([`575b213`](https://github.com/ryanbdclark/owlet/commit/575b213ddd732779cd7938e575fc87c8881a69b0))
+
+### Fix
+* Various refactoring tasks completed to make this integration more inline with home assistants style guidelines ([`2cd46c1`](https://github.com/ryanbdclark/owlet/commit/c45959b123a6e5f77747475f11d3d3ab67859756))
+* Added new sensors to strings jsons ([`2cd46c1`](https://github.com/ryanbdclark/owlet/commit/c45959b123a6e5f77747475f11d3d3ab67859756))
+
 ## 2023.7.2 (2023-07-04)
 ### Fix
 * Bumping pyowletapi version to 2023.7.2 ([`c45959b`](https://github.com/ryanbdclark/owlet/commit/c45959b123a6e5f77747475f11d3d3ab67859756))
