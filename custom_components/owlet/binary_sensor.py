@@ -42,7 +42,6 @@ SENSORS: tuple[OwletBinarySensorEntityDescription, ...] = (
         key="high_oxygen_alert",
         translation_key="high_ox_alrt",
         device_class=BinarySensorDeviceClass.SOUND,
-        entity_registry_enabled_default=False,
     ),
     OwletBinarySensorEntityDescription(
         key="low_oxygen_alert",
@@ -111,12 +110,9 @@ class OwletBinarySensor(OwletBaseEntity, BinarySensorEntity):
         """Return true if the binary sensor is on."""
         state = self.sock.properties[self.entity_description.key]
 
-        entity = self.entity_description.key
-
-        if self.sock.properties["charging"] and entity in ["sleep_state"]:
-            return None
-
-        if entity == "sleep_state":
+        if self.entity_description.key == "sleep_state":
+            if self.sock.properties["charging"]:
+                return None
             if state in [8, 15]:
                 state = False
             else:

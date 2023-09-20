@@ -30,7 +30,7 @@ class OwletSensorEntityDescription(SensorEntityDescription):
     """Represent the owlet sensor entity description."""
 
 
-SENSORS: tuple[OwletSensorEntityDescription, ...] = (
+SENSORS_ALL: tuple[OwletSensorEntityDescription, ...] = (
     OwletSensorEntityDescription(
         key="battery_percentage",
         translation_key="batterypercent",
@@ -41,13 +41,6 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     OwletSensorEntityDescription(
         key="oxygen_saturation",
         translation_key="o2saturation",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        icon="mdi:leaf",
-    ),
-    OwletSensorEntityDescription(
-        key="oxygen_10_av",
-        translation_key="o2saturation10a",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:leaf",
@@ -92,6 +85,16 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
         icon="mdi:cursor-move",
         entity_registry_enabled_default=False,
     ),
+)
+
+SENSORS_OLD: tuple[OwletSensorEntityDescription, ...] = (
+    OwletSensorEntityDescription(
+        key="oxygen_10_av",
+        translation_key="o2saturation10a",
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:leaf",
+    ),
     OwletSensorEntityDescription(
         key="movement_bucket",
         translation_key="movementbucket",
@@ -113,11 +116,17 @@ async def async_setup_entry(
         hass.data[DOMAIN][config_entry.entry_id].values()
     )
 
-    async_add_entities(
-        OwletSensor(coordinator, sensor)
-        for coordinator in coordinators
-        for sensor in SENSORS
-    )
+    sensors = []
+
+    sensor_list = SENSORS_ALL
+    for coordinator in coordinators:
+        if coordinator.sock.revision < 5:
+            sensor_list += SENSORS_OLD
+
+        for sensor in sensor_list:
+            sensors.append(OwletSensor(coordinator, sensor))
+
+    async_add_entities(sensors)
 
 
 class OwletSensor(OwletBaseEntity, SensorEntity):
