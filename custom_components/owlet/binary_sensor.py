@@ -85,12 +85,13 @@ async def async_setup_entry(
 
     coordinators: OwletCoordinator = hass.data[DOMAIN][config_entry.entry_id].values()
 
-    async_add_entities(
-        OwletBinarySensor(coordinator, sensor)
-        for coordinator in coordinators
-        for sensor in SENSORS
-    )
-
+    sensors = []
+    for coordinator in coordinators:
+        for sensor in SENSORS:
+            if sensor.key in coordinator.sock.properties:
+                sensors.append(OwletBinarySensor(coordinator, sensor))
+                
+    async_add_entities(sensors)
 
 class OwletBinarySensor(OwletBaseEntity, BinarySensorEntity):
     """Representation of an Owlet binary sensor."""

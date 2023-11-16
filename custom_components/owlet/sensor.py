@@ -30,7 +30,7 @@ class OwletSensorEntityDescription(SensorEntityDescription):
     """Represent the owlet sensor entity description."""
 
 
-SENSORS_ALL: tuple[OwletSensorEntityDescription, ...] = (
+SENSORS: tuple[OwletSensorEntityDescription, ...] = (
     OwletSensorEntityDescription(
         key="battery_percentage",
         translation_key="batterypercent",
@@ -85,9 +85,6 @@ SENSORS_ALL: tuple[OwletSensorEntityDescription, ...] = (
         icon="mdi:cursor-move",
         entity_registry_enabled_default=False,
     ),
-)
-
-SENSORS_OLD: tuple[OwletSensorEntityDescription, ...] = (
     OwletSensorEntityDescription(
         key="oxygen_10_av",
         translation_key="o2saturation10a",
@@ -118,13 +115,10 @@ async def async_setup_entry(
 
     sensors = []
 
-    sensor_list = SENSORS_ALL
     for coordinator in coordinators:
-        if coordinator.sock.revision < 5:
-            sensor_list += SENSORS_OLD
-
-        for sensor in sensor_list:
-            sensors.append(OwletSensor(coordinator, sensor))
+        for sensor in SENSORS:
+            if sensor.key in coordinator.sock.properties:
+                sensors.append(OwletSensor(coordinator, sensor))
 
     async_add_entities(sensors)
 
