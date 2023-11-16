@@ -1,6 +1,11 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2023.11.1 (2023-11-16)
+### Fix
+* Bumping pyowletapi to 2023.11.1 ([`3acf847`](https://github.com/ryanbdclark/owlet/commit/3acf8473526665382b44ef6325d708a6c62fff45))
+* Sensors and binary sensors are now only created where the sock contains that property, this stops errors where different sock versions have different properties ([`3acf847`](https://github.com/ryanbdclark/owlet/commit/3acf8473526665382b44ef6325d708a6c62fff45))
+
 ## 2023.9.1 (2023-09-20)
 ### Fix
 * Bumping pyowletapi to 2023.9.1 to allow for revisions ([`0a7f703`](https://github.com/ryanbdclark/owlet/commit/0a7f70310080a129c988e9607331baa2f6c691e0))
