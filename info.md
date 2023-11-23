@@ -8,9 +8,7 @@
 [![hacs][hacsbadge]][hacs]
 [![Project Maintenance][maintenance-shield]][user_profile]
 
-A custom component for the Owlet smart sock, currently this only supports the owlet smart sock 3.
-
-If you have a smart sock 2 and would like to contribute then please do so.
+A custom component for the Owlet smart sock
 
 ## Installation
 
