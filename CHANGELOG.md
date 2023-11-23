@@ -1,6 +1,15 @@
 # Changelog
 
 <!--next-version-placeholder-->
+##2023.11.2 (2023-11-23)
+### Feature
+* Support added for V2 sock ([`50fe1a8`](https://github.com/ryanbdclark/owlet/commit/50fe1a87656b7d6413d06f06f3650fd0bfb48e02))
+* Added tests for binary sensors ([`50fe1a8`](https://github.com/ryanbdclark/owlet/commit/50fe1a87656b7d6413d06f06f3650fd0bfb48e02))
+### Fix
+* Bumping pyowletapi to 2023.11.4 to allow V2 support ([`50fe1a8`](https://github.com/ryanbdclark/owlet/commit/50fe1a87656b7d6413d06f06f3650fd0bfb48e02))
+* Refactoring ([`50fe1a8`](https://github.com/ryanbdclark/owlet/commit/50fe1a87656b7d6413d06f06f3650fd0bfb48e02))
+* Corrected spelling of sock disconnected sensor ([`50fe1a8`](https://github.com/ryanbdclark/owlet/commit/50fe1a87656b7d6413d06f06f3650fd0bfb48e02))
+
 ## 2023.11.1 (2023-11-16)
 ### Fix
 * Bumping pyowletapi to 2023.11.1 ([`3acf847`](https://github.com/ryanbdclark/owlet/commit/3acf8473526665382b44ef6325d708a6c62fff45))
