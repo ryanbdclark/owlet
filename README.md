@@ -8,13 +8,11 @@
 [![hacs][hacsbadge]][hacs]
 [![Project Maintenance][maintenance-shield]][user_profile]
 
-A custom component for the Owlet smart sock, currently this only supports the owlet smart sock 3.
-
-If you have a smart sock 2 and would like to contribute then please do so.
+A custom component for the Owlet smart sock
 
 ## Installation
 
-1. Use [HACS](https://hacs.xyz/docs/setup/download), in `HACS > Integrations > Explore & Add Repositories` search for "Owlet". After adding this `https://github.com/ryanbdclark/owlet` as a custom repository.
+1. Use [HACS](https://hacs.xyz/docs/setup/download), in `HACS > Integrations > Explore & Add Repositories` search for "Owlet".
 2. Restart Home Assistant.
 3. [![Add Integration][add-integration-badge]][add-integration] or in the HA UI go to "Settings" -> "Devices & Services" then click "+" and search for "Owlet Smart Sock".
 
