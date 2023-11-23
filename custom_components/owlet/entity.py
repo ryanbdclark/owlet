@@ -2,7 +2,7 @@
 
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.device_registry import DeviceInfo
 
 from .coordinator import OwletCoordinator
 from .const import DOMAIN, MANUFACTURER
@@ -23,7 +23,7 @@ class OwletBaseEntity(CoordinatorEntity[OwletCoordinator], Entity):
 
     @property
     def device_info(self) -> DeviceInfo:
-        """Return the device info of the device"""
+        """Return the device info of the device."""
         return DeviceInfo(
             identifiers={(DOMAIN, self.sock.serial)},
             name="Owlet Baby Care Sock",

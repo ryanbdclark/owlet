@@ -54,14 +54,20 @@
       "low_ox_alrt": {
         "name": "Low oxygen alert"
       },
+      "crit_ox_alrt": {
+        "name": "Critical oxygen alert"
+      },
       "low_batt_alrt": {
         "name": "Low battery alert"
+      },
+      "crit_batt_alrt": {
+        "name": "Critical battery alert"
       },
       "lost_pwr_alrt": {
         "name": "Lost power alert"
       },
       "sock_discon_alrt": {
-        "name": "Sock diconnected alert"
+        "name": "Sock disconnected alert"
       },
       "sock_off": {
         "name": "Sock off"

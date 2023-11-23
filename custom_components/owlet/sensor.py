@@ -160,7 +160,7 @@ class OwletSensor(OwletBaseEntity, SensorEntity):
         return self.sock.properties[self.entity_description.key]
 
     @property
-    def options(self) -> list[str]:
+    def options(self) -> list[str] | None:
         """Set options for sleep state."""
         if self.entity_description.key != "sleep_state":
             return None

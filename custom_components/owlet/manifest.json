@@ -9,7 +9,7 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/ryanbdclark/owlet/issues",
   "requirements": [
-    "pyowletapi==2023.11.1"
+    "pyowletapi==2023.11.4"
   ],
-  "version": "2023.11.1"
+  "version": "2023.11.2"
 }

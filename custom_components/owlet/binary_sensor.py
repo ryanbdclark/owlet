@@ -49,8 +49,18 @@ SENSORS: tuple[OwletBinarySensorEntityDescription, ...] = (
         device_class=BinarySensorDeviceClass.SOUND,
     ),
     OwletBinarySensorEntityDescription(
+        key="critical_oxygen_alert",
+        translation_key="crit_ox_alrt",
+        device_class=BinarySensorDeviceClass.SOUND,
+    ),
+    OwletBinarySensorEntityDescription(
         key="low_battery_alert",
         translation_key="low_batt_alrt",
+        device_class=BinarySensorDeviceClass.SOUND,
+    ),
+    OwletBinarySensorEntityDescription(
+        key="critical_battery_alert",
+        translation_key="crit_batt_alrt",
         device_class=BinarySensorDeviceClass.SOUND,
     ),
     OwletBinarySensorEntityDescription(
@@ -87,11 +97,13 @@ async def async_setup_entry(
 
     sensors = []
     for coordinator in coordinators:
+        print(coordinator.sock.properties)
         for sensor in SENSORS:
             if sensor.key in coordinator.sock.properties:
                 sensors.append(OwletBinarySensor(coordinator, sensor))
-                
+
     async_add_entities(sensors)
+
 
 class OwletBinarySensor(OwletBaseEntity, BinarySensorEntity):
     """Representation of an Owlet binary sensor."""

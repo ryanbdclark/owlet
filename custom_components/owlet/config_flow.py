@@ -12,7 +12,6 @@ from pyowletapi.exceptions import (
     OwletEmailError,
     OwletPasswordError,
 )
-from pyowletapi.sock import Sock
 import voluptuous as vol
 
 from homeassistant import config_entries, exceptions
@@ -86,10 +85,8 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     title=user_input[CONF_USERNAME],
                     data={
                         CONF_REGION: user_input[CONF_REGION],
-                        CONF_USERNAME: user_input[CONF_PASSWORD],
-                        CONF_API_TOKEN: token[CONF_API_TOKEN],
-                        CONF_OWLET_EXPIRY: token[CONF_OWLET_EXPIRY],
-                        CONF_OWLET_REFRESH: token[CONF_OWLET_REFRESH],
+                        CONF_USERNAME: user_input[CONF_USERNAME],
+                        **token,
                     },
                     options={CONF_SCAN_INTERVAL: POLLING_INTERVAL},
                 )

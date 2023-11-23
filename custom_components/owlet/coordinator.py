@@ -36,7 +36,7 @@ class OwletCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=interval),
         )
         self.sock = sock
-        self.config_entry = entry
+        self.config_entry: ConfigEntry = entry
 
     async def _async_update_data(self) -> None:
         """Fetch the data from the device."""

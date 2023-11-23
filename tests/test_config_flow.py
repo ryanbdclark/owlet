@@ -70,7 +70,7 @@ async def test_flow_wrong_password(hass: HomeAssistant) -> None:
             user_input=CONF_INPUT,
         )
         assert result["type"] == FlowResultType.FORM
-        assert result["errors"] == {"base": "invalid_password"}
+        assert result["errors"] == {"password": "invalid_password"}
 
 
 async def test_flow_wrong_email(hass: HomeAssistant) -> None:
@@ -88,7 +88,7 @@ async def test_flow_wrong_email(hass: HomeAssistant) -> None:
             user_input=CONF_INPUT,
         )
         assert result["type"] == FlowResultType.FORM
-        assert result["errors"] == {"base": "invalid_email"}
+        assert result["errors"] == {"username": "invalid_email"}
 
 
 async def test_flow_credentials_error(hass: HomeAssistant) -> None:
@@ -193,7 +193,7 @@ async def test_reauth_invalid_password(hass: HomeAssistant) -> None:
 
         assert result["type"] == FlowResultType.FORM
         assert result["step_id"] == "reauth_confirm"
-        assert result["errors"] == {"base": "invalid_password"}
+        assert result["errors"] == {"password": "invalid_password"}
 
 
 async def test_reauth_unknown_error(hass: HomeAssistant) -> None:

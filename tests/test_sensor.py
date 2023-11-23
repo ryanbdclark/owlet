@@ -107,3 +107,20 @@ async def test_sensors_charging(hass: HomeAssistant) -> None:
         == "unknown"
     )
     assert hass.states.get("sensor.owlet_baby_care_sock_sleep_state").state == "unknown"
+
+
+async def test_sensors_v2(hass: HomeAssistant) -> None:
+    """Test sensor values."""
+    await async_init_integration(hass, properties_fixture="update_properties_v2.json")
+    assert len(hass.states.async_all("sensor")) == 4
+
+    assert (
+        hass.states.get("sensor.owlet_baby_care_sock_battery_percentage").state == "29"
+    )
+    assert hass.states.get("sensor.owlet_baby_care_sock_heart_rate").state == "145"
+    assert hass.states.get("sensor.owlet_baby_care_sock_o2_saturation").state == "99"
+
+    assert (
+        hass.states.get("sensor.owlet_baby_care_sock_signal_strength").state == "98.0"
+    )
+
