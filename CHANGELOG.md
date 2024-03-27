@@ -1,6 +1,14 @@
 # Changelog
 
 <!--next-version-placeholder-->
+##2024.3.1
+### Feature
+* Base station on added as binary sensor ([`50c55dc`](https://github.com/ryanbdclark/owlet/commit/50c55dcfd30d15027155a8f1d05340238501522d))
+
+### Fix
+* Bumping pyowletapi to 2024.3.2 ([`50c55dc`](https://github.com/ryanbdclark/owlet/commit/50c55dcfd30d15027155a8f1d05340238501522d))
+* UI config now allows you to set interval to 5 seconds, previously the minimum was 10 ([`50c55dc`](https://github.com/ryanbdclark/owlet/commit/50c55dcfd30d15027155a8f1d05340238501522d))
+
 ##2023.11.2 (2023-11-23)
 ### Feature
 * Support added for V2 sock ([`50fe1a8`](https://github.com/ryanbdclark/owlet/commit/50fe1a87656b7d6413d06f06f3650fd0bfb48e02))
