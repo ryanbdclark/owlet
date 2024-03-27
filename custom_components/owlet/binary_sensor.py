@@ -83,6 +83,11 @@ SENSORS: tuple[OwletBinarySensorEntityDescription, ...] = (
         translation_key="awake",
         icon="mdi:sleep",
     ),
+    OwletBinarySensorEntityDescription(
+        key="base_station_on",
+        translation_key="base_on",
+        device_class=BinarySensorDeviceClass.POWER,
+    ),
 )
 
 
@@ -97,7 +102,6 @@ async def async_setup_entry(
 
     sensors = []
     for coordinator in coordinators:
-        print(coordinator.sock.properties)
         for sensor in SENSORS:
             if sensor.key in coordinator.sock.properties:
                 sensors.append(OwletBinarySensor(coordinator, sensor))

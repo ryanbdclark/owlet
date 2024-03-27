@@ -74,7 +74,10 @@
             },
             "awake": {
                 "name": "Awake"
-            }
+            },
+            "base_on": {
+                "name": "Base station on"
+              }
         },
         "sensor": {
             "batterypercent": {

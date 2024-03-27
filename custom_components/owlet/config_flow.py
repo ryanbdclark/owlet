@@ -165,7 +165,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 vol.Required(
                     CONF_SCAN_INTERVAL,
                     default=self.config_entry.options.get(CONF_SCAN_INTERVAL),
-                ): vol.All(vol.Coerce(int), vol.Range(min=10)),
+                ): vol.All(vol.Coerce(int), vol.Range(min=5)),
             }
         )
 
