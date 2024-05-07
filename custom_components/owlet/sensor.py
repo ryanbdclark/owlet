@@ -157,6 +157,12 @@ class OwletSensor(OwletBaseEntity, SensorEntity):
         if self.entity_description.key == "sleep_state":
             return SLEEP_STATES[self.sock.properties["sleep_state"]]
 
+        if self.entity_description.key == "oxygen_10_av":
+            val = self.sock.properties[self.entity_description.key]
+            if val is None or not isinstance(val, (int, float)) or val < 0 or val > 100:
+                return None
+            return val
+
         return self.sock.properties[self.entity_description.key]
 
     @property
