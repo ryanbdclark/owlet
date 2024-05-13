@@ -1,7 +1,7 @@
 # Changelog
 
 <!--next-version-placeholder-->
-##2024.5.1
+## 2024.5.1 (2024-05-13)
 ### Feature
 * As per HA core patterns, certain sensors will now show as unavailable when sock is charging ([`ceade24`](https://github.com/ryanbdclark/owlet/commit/ceade24851479b8c9bc60b7b8bed74a7bdb927e9))
 * Oxygen 10 minute average now only shows a figure if it is between 0 and 100 this avoids skewing by 255 values before the 10 minutes is reached, thanks @coreywillwhat ([`5e17ecd`](https://github.com/ryanbdclark/owlet/commit/5e17ecdeb2aca5bbb35f19ca5795a2c5e0f776ab))
@@ -9,7 +9,7 @@
 * Refactoring as per core maintainers suggestions ([`ceade24`](https://github.com/ryanbdclark/owlet/commit/ceade24851479b8c9bc60b7b8bed74a7bdb927e9))
 
 
-##2024.3.1
+## 2024.3.1
 ### Feature
 * Base station on added as binary sensor ([`50c55dc`](https://github.com/ryanbdclark/owlet/commit/50c55dcfd30d15027155a8f1d05340238501522d))
 
@@ -17,7 +17,7 @@
 * Bumping pyowletapi to 2024.3.2 ([`50c55dc`](https://github.com/ryanbdclark/owlet/commit/50c55dcfd30d15027155a8f1d05340238501522d))
 * UI config now allows you to set interval to 5 seconds, previously the minimum was 10 ([`50c55dc`](https://github.com/ryanbdclark/owlet/commit/50c55dcfd30d15027155a8f1d05340238501522d))
 
-##2023.11.2 (2023-11-23)
+## 2023.11.2 (2023-11-23)
 ### Feature
 * Support added for V2 sock ([`50fe1a8`](https://github.com/ryanbdclark/owlet/commit/50fe1a87656b7d6413d06f06f3650fd0bfb48e02))
 * Added tests for binary sensors ([`50fe1a8`](https://github.com/ryanbdclark/owlet/commit/50fe1a87656b7d6413d06f06f3650fd0bfb48e02))
