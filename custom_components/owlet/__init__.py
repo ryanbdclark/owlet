@@ -1,4 +1,5 @@
 """The Owlet Smart Sock integration."""
+
 from __future__ import annotations
 
 import asyncio
@@ -72,15 +73,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             entry, data={**entry.data, **devices["tokens"]}
         )
 
-    socks = {
-        device["device"]["dsn"]: Sock(owlet_api, device["device"])
-        for device in devices["response"]
-    }
-
     scan_interval = entry.options.get(CONF_SCAN_INTERVAL)
     coordinators = {
-        serial: OwletCoordinator(hass, sock, scan_interval, entry)
-        for (serial, sock) in socks.items()
+        device["device"]["dsn"]: OwletCoordinator(
+            hass, Sock(owlet_api, device["device"]), scan_interval, entry
+        )
+        for device in devices["response"]
     }
 
     await asyncio.gather(

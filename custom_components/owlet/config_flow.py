@@ -130,9 +130,9 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         self.reauth_entry, data={**entry_data, **token}
                     )
 
-                await self.hass.config_entries.async_reload(self.reauth_entry.entry_id)
+                    await self.hass.config_entries.async_reload(self.reauth_entry.entry_id)
 
-                return self.async_abort(reason="reauth_successful")
+                    return self.async_abort(reason="reauth_successful")
 
             except OwletPasswordError:
                 errors[CONF_PASSWORD] = "invalid_password"
