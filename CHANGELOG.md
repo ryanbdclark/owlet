@@ -5,7 +5,7 @@
 ### Feature
 * As per HA core patterns, certain sensors will now show as unavailable when sock is charging ([`ceade24`](https://github.com/ryanbdclark/owlet/commit/ceade24851479b8c9bc60b7b8bed74a7bdb927e9))
 * Oxygen 10 minute average now only shows a figure if it is between 0 and 100 this avoids skewing by 255 values before the 10 minutes is reached, thanks @coreywillwhat ([`5e17ecd`](https://github.com/ryanbdclark/owlet/commit/5e17ecdeb2aca5bbb35f19ca5795a2c5e0f776ab))
-###
+### Fix
 * Refactoring as per core maintainers suggestions ([`ceade24`](https://github.com/ryanbdclark/owlet/commit/ceade24851479b8c9bc60b7b8bed74a7bdb927e9))
 
 
