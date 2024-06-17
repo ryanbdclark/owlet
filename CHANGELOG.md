@@ -1,6 +1,10 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2024.6.1 (2024-06-17)
+### Fix
+* Bumping pyowletapi to 2024.6.1 to resolve setup errors ([`52710ba`](https://github.com/ryanbdclark/owlet/commit/52710ba7de53fd07195537c2a5fd2f95bc7dfd1a))
+
 ## 2024.5.1 (2024-05-13)
 ### Feature
 * As per HA core patterns, certain sensors will now show as unavailable when sock is charging ([`ceade24`](https://github.com/ryanbdclark/owlet/commit/ceade24851479b8c9bc60b7b8bed74a7bdb927e9))
