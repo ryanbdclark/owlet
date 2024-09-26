@@ -1,6 +1,10 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2024.9.1 (2024-09-26)
+### Feature
+* Now includes French translation, thanks [`@Julien80`](https://github.com/Julien80) ([`f3c853e`](https://github.com/ryanbdclark/owlet/commit/f3c853e2d7243d766889f2d18c718819da30e4be))
+
 ## 2024.6.1 (2024-06-17)
 ### Fix
 * Bumping pyowletapi to 2024.6.1 to resolve setup errors ([`52710ba`](https://github.com/ryanbdclark/owlet/commit/52710ba7de53fd07195537c2a5fd2f95bc7dfd1a))
