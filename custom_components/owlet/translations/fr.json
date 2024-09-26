@@ -1,0 +1,121 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "data": {
+                    "region": "Région",
+                    "username": "Email",
+                    "password": "[%key:common::config_flow::data::password%]"
+                }
+            },
+            "reauth_confirm": {
+                "title": "Réauthentification requise pour Owlet",
+                "data": {
+                    "password": "[%key:common::config_flow::data::password%]"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+            "invalid_email": "L'adresse e-mail saisie est incorrecte",
+            "invalid_password": "Le mot de passe saisi est incorrect",
+            "invalid_credentials": "Les informations d'identification saisies sont incorrectes",
+            "unknown": "Une erreur inconnue est survenue"
+        },
+        "abort": {
+            "already_configured": "Appareil déjà configuré",
+            "reauth_successful": "Réauthentification réussie"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Configurer les options pour Owlet",
+                "data": {
+                    "pollinterval": "Intervalle de sondage en secondes, minimum 10"
+                }
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "charging": {
+                "name": "En charge"
+            },
+            "high_hr_alrt": {
+                "name": "Alerte fréquence cardiaque élevée"
+            },
+            "low_hr_alrt": {
+                "name": "Alerte fréquence cardiaque basse"
+            },
+            "high_ox_alrt": {
+                "name": "Alerte oxygène élevé"
+            },
+            "low_ox_alrt": {
+                "name": "Alerte oxygène faible"
+            },
+            "crit_ox_alrt": {
+                "name": "Alerte oxygène critique"
+            },
+            "low_batt_alrt": {
+                "name": "Alerte batterie faible"
+            },
+            "crit_batt_alrt": {
+                "name": "Alerte batterie critique"
+            },
+            "lost_pwr_alrt": {
+                "name": "Alerte perte d'alimentation"
+            },
+            "sock_discon_alrt": {
+                "name": "Alerte chaussette déconnectée"
+            },
+            "sock_off": {
+                "name": "Chaussette retirée"
+            },
+            "awake": {
+                "name": "Réveillé"
+            },
+            "base_on": {
+                "name": "Station de base allumée"
+            }
+        },
+        "sensor": {
+            "batterypercent": {
+                "name": "Pourcentage de batterie"
+            },
+            "signalstrength": {
+                "name": "Force du signal"
+            },
+            "o2saturation": {
+                "name": "Saturation O2"
+            },
+            "o2saturation10a": {
+                "name": "Moyenne de saturation O2 sur 10 minutes"
+            },
+            "heartrate": {
+                "name": "Fréquence cardiaque"
+            },
+            "batterymin": {
+                "name": "Autonomie de la batterie restante"
+            },
+            "skintemp": {
+                "name": "Température de la peau"
+            },
+            "sleepstate": {
+                "name": "État de sommeil",
+                "state": {
+                    "unknown": "Inconnu",
+                    "awake": "Réveillé",
+                    "light_sleep": "Sommeil léger",
+                    "deep_sleep": "Sommeil profond"
+                }
+            },
+            "movement": {
+                "name": "Mouvement"
+            },
+            "movementbucket": {
+                "name": "Seuil de mouvement"
+            }
+        }
+    }
+}
