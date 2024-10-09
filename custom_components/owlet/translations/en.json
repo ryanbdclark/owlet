@@ -74,9 +74,6 @@
             },
             "awake": {
                 "name": "Awake"
-            },
-            "base_on": {
-                "name": "Base station on"
             }
         },
         "sensor": {
@@ -115,6 +112,11 @@
             },
             "movementbucket": {
                 "name": "Movement bucket"
+            }
+        },
+        "switch": {
+            "base_on": {
+                "name": "Base station on"
             }
         }
     }

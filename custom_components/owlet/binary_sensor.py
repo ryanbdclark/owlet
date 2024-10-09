@@ -92,12 +92,6 @@ SENSORS: tuple[OwletBinarySensorEntityDescription, ...] = (
         device_class=BinarySensorDeviceClass.POWER,
         available_during_charging=True,
     ),
-    OwletBinarySensorEntityDescription(
-        key="base_station_on",
-        translation_key="base_on",
-        device_class=BinarySensorDeviceClass.POWER,
-        available_during_charging=True,
-    ),
 )
 
 
@@ -177,4 +171,8 @@ class OwletAwakeSensor(OwletBinarySensor):
     @property
     def is_on(self) -> bool:
         """Return true if the binary sensor is on."""
-        return False if self.sock.properties[self.entity_description.key] in [8, 15] else True
+        return (
+            False
+            if self.sock.properties[self.entity_description.key] in [8, 15]
+            else True
+        )

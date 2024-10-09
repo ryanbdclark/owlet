@@ -74,9 +74,6 @@
             },
             "awake": {
                 "name": "Réveillé"
-            },
-            "base_on": {
-                "name": "Station de base allumée"
             }
         },
         "sensor": {
@@ -115,6 +112,11 @@
             },
             "movementbucket": {
                 "name": "Seuil de mouvement"
+            }
+        },
+        "switch": {
+            "base_on": {
+                "name": "Station de base allumée"
             }
         }
     }
