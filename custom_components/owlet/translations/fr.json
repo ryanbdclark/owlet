@@ -5,18 +5,18 @@
                 "data": {
                     "region": "Région",
                     "username": "Email",
-                    "password": "[%key:common::config_flow::data::password%]"
+                    "password": "Mot de passe"
                 }
             },
             "reauth_confirm": {
                 "title": "Réauthentification requise pour Owlet",
                 "data": {
-                    "password": "[%key:common::config_flow::data::password%]"
+                    "password": "Mot de passe"
                 }
             }
         },
         "error": {
-            "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+            "cannot_connect": "N'a pas réussi à se connecter",
             "invalid_email": "L'adresse e-mail saisie est incorrecte",
             "invalid_password": "Le mot de passe saisi est incorrect",
             "invalid_credentials": "Les informations d'identification saisies sont incorrectes",
