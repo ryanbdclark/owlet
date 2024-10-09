@@ -63,6 +63,7 @@ SENSORS: tuple[OwletSensorEntityDescription, ...] = (
         translation_key="batterymin",
         native_unit_of_measurement=UnitOfTime.MINUTES,
         device_class=SensorDeviceClass.DURATION,
+        state_class=SensorStateClass.MEASUREMENT,
         available_during_charging=False,
     ),
     OwletSensorEntityDescription(
@@ -120,7 +121,10 @@ async def async_setup_entry(
 
         if OwletSleepSensor.entity_description.key in coordinator.sock.properties:
             sensors.append(OwletSleepSensor(coordinator))
-        if OwletOxygenAverageSensor.entity_description.key in coordinator.sock.properties:
+        if (
+            OwletOxygenAverageSensor.entity_description.key
+            in coordinator.sock.properties
+        ):
             sensors.append(OwletOxygenAverageSensor(coordinator))
 
     async_add_entities(sensors)
@@ -187,6 +191,7 @@ class OwletOxygenAverageSensor(OwletSensor):
         native_unit_of_measurement=PERCENTAGE,
         icon="mdi:leaf",
         available_during_charging=False,
+        state_class=SensorStateClass.MEASUREMENT,
     )
 
     def __init__(
@@ -199,8 +204,14 @@ class OwletOxygenAverageSensor(OwletSensor):
     @property
     def available(self) -> bool:
         """Return if entity is available."""
-        return super().available and (
-            not self.sock.properties["charging"]
-            or self.entity_description.available_during_charging
-        ) and (self.sock.properties["oxygen_10_av"] >= 0 and self.sock.properties["oxygen_10_av"] <= 100)
-
+        return (
+            super().available
+            and (
+                not self.sock.properties["charging"]
+                or self.entity_description.available_during_charging
+            )
+            and (
+                self.sock.properties["oxygen_10_av"] >= 0
+                and self.sock.properties["oxygen_10_av"] <= 100
+            )
+        )
