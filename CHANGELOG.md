@@ -1,6 +1,14 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2024.10.1 (2024-10-09)
+### Feature
+* Base station has now been removed from binary sensors and added as a switch ([`f63e0a6`](https://github.com/ryanbdclark/owlet/commit/f63e0a6dfeab1a05ba09ef3e0087cb404ba0dac4))
+### Fix
+* Bump pyowletapi to 2024.10.1 ([`82823be`](https://github.com/ryanbdclark/owlet/commit/82823be1c8265d2b9431771136853febef648650))
+* Fix strings for password and connection error in all languages ([`14787e0`](https://github.com/ryanbdclark/owlet/commit/14787e03c4d275f46f446921a3ee133fc7cfd1b1))
+* Add state class to battery minutes and O2 saturation 10 minute average ([`0991eb3`](https://github.com/ryanbdclark/owlet/commit/0991eb31d919f3ee9f65ece793166d7ee3e33c38))
+
 ## 2024.9.1 (2024-09-26)
 ### Feature
 * Now includes French translation, thanks [`@Julien80`](https://github.com/Julien80) ([`f3c853e`](https://github.com/ryanbdclark/owlet/commit/f3c853e2d7243d766889f2d18c718819da30e4be))
