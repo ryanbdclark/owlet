@@ -1,87 +1,86 @@
 {
     "config": {
-        "step": {
-            "user": {
-                "data": {
-                    "region": "Region",
-                    "username": "Email",
-                    "password": "Password"
-                }
-            },
-            "reauth_confirm": {
-                "title": "Reauthentiaction required for Owlet",
-                "data": {
-                    "password": "Password"
-                }
-            }
-        },
-        "error": {
-            "cannot_connect": "Failed to connect",
-            "invalid_email": "Entered email address is incorrect",
-            "invalid_password": "Entered password is incorrect",
-            "invalid_credentials": "Entered credentials are incorrect",
-            "unknown": "Unknown error occured"
-        },
         "abort": {
             "already_configured": "Device already configured",
             "reauth_successful": "Reauthentication successful"
-        }
-    },
-    "options": {
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "invalid_credentials": "Entered credentials are incorrect",
+            "invalid_email": "Entered email address is incorrect",
+            "invalid_password": "Entered password is incorrect",
+            "unknown": "Unknown error occured"
+        },
         "step": {
-            "init": {
-                "title": "Configure options for Owlet",
+            "reauth_confirm": {
                 "data": {
-                    "pollinterval": "Polling interval in seconds, min 10"
+                    "password": "Password"
+                },
+                "title": "Reauthentiaction required for Owlet"
+            },
+            "user": {
+                "data": {
+                    "password": "Password",
+                    "region": "Region",
+                    "username": "Email"
                 }
             }
         }
     },
     "entity": {
         "binary_sensor": {
+            "awake": {
+                "name": "Awake"
+            },
             "charging": {
                 "name": "Charging"
-            },
-            "high_hr_alrt": {
-                "name": "High heart rate alert"
-            },
-            "low_hr_alrt": {
-                "name": "Low heart rate alert"
-            },
-            "high_ox_alrt": {
-                "name": "High oxygen alert"
-            },
-            "low_ox_alrt": {
-                "name": "Low oxygen alert"
-            },
-            "crit_ox_alrt": {
-                "name": "Critical oxygen alert"
-            },
-            "low_batt_alrt": {
-                "name": "Low battery alert"
             },
             "crit_batt_alrt": {
                 "name": "Critical battery alert"
             },
+            "crit_ox_alrt": {
+                "name": "Critical oxygen alert"
+            },
+            "high_hr_alrt": {
+                "name": "High heart rate alert"
+            },
+            "high_ox_alrt": {
+                "name": "High oxygen alert"
+            },
             "lost_pwr_alrt": {
                 "name": "Lost power alert"
+            },
+            "low_batt_alrt": {
+                "name": "Low battery alert"
+            },
+            "low_hr_alrt": {
+                "name": "Low heart rate alert"
+            },
+            "low_ox_alrt": {
+                "name": "Low oxygen alert"
             },
             "sock_discon_alrt": {
                 "name": "Sock disconnected alert"
             },
             "sock_off": {
                 "name": "Sock off"
-            },
-            "awake": {
-                "name": "Awake"
             }
         },
         "sensor": {
+            "batterymin": {
+                "name": "Battery remaining"
+            },
             "batterypercent": {
                 "name": "Battery percentage"
             },
-            "signalstrength": {
-                "name": "Signal strength"
+            "heartrate": {
+                "name": "Heart rate"
+            },
+            "movement": {
+                "name": "Movement"
+            },
+            "movementbucket": {
+                "name": "Movement bucket"
             },
             "o2saturation": {
                 "name": "O2 saturation"
@@ -89,11 +88,8 @@
             "o2saturation10a": {
                 "name": "O2 saturation 10 minute average"
             },
-            "heartrate": {
-                "name": "Heart rate"
-            },
-            "batterymin": {
-                "name": "Battery remaining"
+            "signalstrength": {
+                "name": "Signal strength"
             },
             "skintemp": {
                 "name": "Skin temperature"
@@ -101,22 +97,26 @@
             "sleepstate": {
                 "name": "Sleep state",
                 "state": {
-                    "unknown": "Unknown",
                     "awake": "Awake",
+                    "deep_sleep": "Deep sleep",
                     "light_sleep": "Light sleep",
-                    "deep_sleep": "Deep sleep"
+                    "unknown": "Unknown"
                 }
-            },
-            "movement": {
-                "name": "Movement"
-            },
-            "movementbucket": {
-                "name": "Movement bucket"
             }
         },
         "switch": {
             "base_on": {
                 "name": "Base station on"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "pollinterval": "Polling interval in seconds, min 10"
+                },
+                "title": "Configure options for Owlet"
             }
         }
     }

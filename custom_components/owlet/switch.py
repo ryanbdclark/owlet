@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable, Coroutine
 from dataclasses import dataclass
 from datetime import timedelta
 from typing import Any
 
-from homeassistant.config_entries import ConfigEntry
+from pyowletapi.sock import Sock
+
 from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -17,6 +20,26 @@ from .entity import OwletBaseEntity
 
 SCAN_INTERVAL = timedelta(seconds=5)
 PARALLEL_UPDATES = 0
+
+
+@dataclass(frozen=True, kw_only=True)
+class OwletSwitchEntityDescription(SwitchEntityDescription):
+    """Describes Owlet switch entity."""
+
+    turn_on_fn: Callable[[Sock], Callable[[bool], Coroutine[Any, Any, None]]]
+    turn_off_fn: Callable[[Sock], Callable[[bool], Coroutine[Any, Any, None]]]
+    available_during_charging: bool
+
+
+SWITCHES: tuple[OwletSwitchEntityDescription, ...] = (
+    OwletSwitchEntityDescription(
+        key="base_station_on",
+        translation_key="base_on",
+        turn_on_fn=lambda sock: (lambda state: sock.control_base_station(state)),
+        turn_off_fn=lambda sock: (lambda state: sock.control_base_station(state)),
+        available_during_charging=False,
+    ),
+)
 
 
 async def async_setup_entry(
@@ -29,30 +52,43 @@ async def async_setup_entry(
 
     switches = []
     for coordinator in coordinators:
-        switches.append(OwletBaseSwitch(coordinator))
+        switches = [OwletBaseSwitch(coordinator, switch) for switch in SWITCHES]
     async_add_entities(switches)
 
 
 class OwletBaseSwitch(OwletBaseEntity, SwitchEntity):
     """Defines a Owlet switch."""
 
-    _attr_has_entity_name = True
-    _attr_translation_key = "base_on"
+    entity_description: OwletSwitchEntityDescription
 
-    def __init__(self, coordinator: OwletCoordinator) -> None:
-        """Initialize ecobee ventilator platform."""
+    def __init__(
+        self,
+        coordinator: OwletCoordinator,
+        description: OwletSwitchEntityDescription,
+    ) -> None:
+        """Initialize owlet switch platform."""
         super().__init__(coordinator)
-        self._attr_unique_id = f"{self.sock.serial}-base_station_on"
+        self.entity_description = description
+        self._attr_unique_id = f"{self.sock.serial}-{description.key}"
         self._attr_is_on = False
 
     @property
-    def is_on(self):
-        return self.sock.properties["base_station_on"]
+    def available(self) -> bool:
+        """Return if entity is available."""
+        return super().available and (
+            not self.sock.properties["charging"]
+            or self.entity_description.available_during_charging
+        )
+
+    @property
+    def is_on(self) -> bool:
+        """Return if switch is on or off."""
+        return self.sock.properties[self.entity_description.key]
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn on the switch."""
-        await self.sock.control_base_station(True)
+        await self.entity_description.turn_on_fn(self.sock)(True)
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn off the switch."""
-        await self.sock.control_base_station(False)
+        await self.entity_description.turn_off_fn(self.sock)(False)

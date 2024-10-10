@@ -1,4 +1,5 @@
 """Config flow for Owlet Smart Sock integration."""
+
 from __future__ import annotations
 
 from collections.abc import Mapping
@@ -15,19 +16,17 @@ from pyowletapi.exceptions import (
 import voluptuous as vol
 
 from homeassistant import config_entries, exceptions
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import ConfigEntry, ConfigFlowResult
 from homeassistant.const import (
-    CONF_API_TOKEN,
     CONF_PASSWORD,
     CONF_REGION,
     CONF_SCAN_INTERVAL,
     CONF_USERNAME,
 )
 from homeassistant.core import callback
-from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import CONF_OWLET_EXPIRY, CONF_OWLET_REFRESH, DOMAIN, POLLING_INTERVAL
+from .const import DOMAIN, POLLING_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -51,7 +50,7 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Handle the initial step."""
         errors: dict[str, str] = {}
         if user_input is not None:
@@ -101,7 +100,9 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Get the options flow for this handler."""
         return OptionsFlowHandler(config_entry)
 
-    async def async_step_reauth(self, user_input: Mapping[str, Any]) -> FlowResult:
+    async def async_step_reauth(
+        self, user_input: Mapping[str, Any]
+    ) -> ConfigFlowResult:
         """Handle reauth."""
         self.reauth_entry = self.hass.config_entries.async_get_entry(
             self.context["entry_id"]
@@ -110,7 +111,7 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_reauth_confirm(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Dialog that informs the user that reauth is required."""
         assert self.reauth_entry is not None
         errors: dict[str, str] = {}
@@ -130,7 +131,9 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         self.reauth_entry, data={**entry_data, **token}
                     )
 
-                    await self.hass.config_entries.async_reload(self.reauth_entry.entry_id)
+                    await self.hass.config_entries.async_reload(
+                        self.reauth_entry.entry_id
+                    )
 
                     return self.async_abort(reason="reauth_successful")
 
@@ -155,7 +158,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Handle options flow."""
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)

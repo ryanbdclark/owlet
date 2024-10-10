@@ -106,9 +106,11 @@ async def async_setup_entry(
 
     sensors = []
     for coordinator in coordinators:
-        for sensor in SENSORS:
-            if sensor.key in coordinator.sock.properties:
-                sensors.append(OwletBinarySensor(coordinator, sensor))
+        sensors = [
+            OwletBinarySensor(coordinator, sensor)
+            for sensor in SENSORS
+            if sensor.key in coordinator.sock.properties
+        ]
 
         if OwletAwakeSensor.entity_description.key in coordinator.sock.properties:
             sensors.append(OwletAwakeSensor(coordinator))
@@ -140,13 +142,6 @@ class OwletBinarySensor(OwletBaseEntity, BinarySensorEntity):
     @property
     def is_on(self) -> bool:
         """Return true if the binary sensor is on."""
-        if self.entity_description.key == "sleep_state":
-            if self.sock.properties["charging"]:
-                return None
-            if state in [8, 15]:
-                state = False
-            else:
-                state = True
 
         return self.sock.properties[self.entity_description.key]
 
@@ -171,8 +166,4 @@ class OwletAwakeSensor(OwletBinarySensor):
     @property
     def is_on(self) -> bool:
         """Return true if the binary sensor is on."""
-        return (
-            False
-            if self.sock.properties[self.entity_description.key] in [8, 15]
-            else True
-        )
+        return self.sock.properties[self.entity_description.key] not in [8, 15]

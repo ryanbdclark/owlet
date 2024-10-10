@@ -1,11 +1,11 @@
 """Base class for Owlet entities."""
 
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.helpers.device_registry import DeviceInfo
 
-from .coordinator import OwletCoordinator
 from .const import DOMAIN, MANUFACTURER
+from .coordinator import OwletCoordinator
 
 
 class OwletBaseEntity(CoordinatorEntity[OwletCoordinator], Entity):
