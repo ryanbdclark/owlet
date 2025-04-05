@@ -5,7 +5,6 @@
     "@ryanbdclark"
   ],
   "config_flow": true,
-  "documentation": "https://www.home-assistant.io/integrations/owlet",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/ryanbdclark/owlet/issues",
   "requirements": [
