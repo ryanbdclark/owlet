@@ -1,6 +1,10 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2025.4.0 (2025-04-0)
+### Fix
+* Bumping pyowletapi to 2025.4.0
+
 ## 2024.10.1 (2024-10-09)
 ### Feature
 * Base station has now been removed from binary sensors and added as a switch ([`f63e0a6`](https://github.com/ryanbdclark/owlet/commit/f63e0a6dfeab1a05ba09ef3e0087cb404ba0dac4))
