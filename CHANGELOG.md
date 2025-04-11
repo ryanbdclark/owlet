@@ -3,7 +3,7 @@
 <!--next-version-placeholder-->
 ## 2025.4.0 (2025-04-0)
 ### Fix
-* Bumping pyowletapi to 2025.4.0
+* Bumping pyowletapi to 2025.4.0 ([`268365c`](https://github.com/ryanbdclark/owlet/commit/268365ccd428418dd5707f0569ce738b54a12fdd))
 
 ## 2024.10.1 (2024-10-09)
 ### Feature
