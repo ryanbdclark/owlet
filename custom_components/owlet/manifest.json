@@ -11,5 +11,5 @@
   "requirements": [
     "pyowletapi==2025.4.0"
   ],
-  "version": "2025.4.0"
+  "version": "2025.4.1"
 }

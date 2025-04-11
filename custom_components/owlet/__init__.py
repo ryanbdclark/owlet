@@ -68,7 +68,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         _LOGGER.error("No owlet devices found to set up")
         return False
 
-    if devices["tokens"]:
+    if "tokens" in devices:
         hass.config_entries.async_update_entry(
             entry, data={**entry.data, **devices["tokens"]}
         )

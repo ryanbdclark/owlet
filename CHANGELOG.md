@@ -1,7 +1,11 @@
 # Changelog
 
 <!--next-version-placeholder-->
-## 2025.4.0 (2025-04-0)
+## 2025.4.1 (2025-04-11)
+### Fix
+* Changes to stop errors after refactoring pyowletapi
+
+## 2025.4.0 (2025-04-11)
 ### Fix
 * Bumping pyowletapi to 2025.4.0
 

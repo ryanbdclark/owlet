@@ -42,7 +42,7 @@ class OwletCoordinator(DataUpdateCoordinator):
         """Fetch the data from the device."""
         try:
             properties = await self.sock.update_properties()
-            if properties["tokens"]:
+            if "tokens" in properties:
                 self.hass.config_entries.async_update_entry(
                     self.config_entry,
                     data={**self.config_entry.data, **properties["tokens"]},

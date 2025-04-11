@@ -125,8 +125,7 @@ class OwletConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 session=async_get_clientsession(self.hass),
             )
             try:
-                token = await owlet_api.authenticate()
-                if token:
+                if token := await owlet_api.authenticate():
                     self.hass.config_entries.async_update_entry(
                         self.reauth_entry, data={**entry_data, **token}
                     )
