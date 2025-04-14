@@ -1,6 +1,10 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2025.4.2 (2025-04-14)
+### Fix
+* Bumping pyowletapi to 2025.4.1, should hopefully stop issue where only one device was added to HA.
+
 ## 2025.4.1 (2025-04-11)
 ### Fix
 * Changes to stop errors after refactoring pyowletapi
