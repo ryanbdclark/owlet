@@ -3,7 +3,6 @@
 <!--next-version-placeholder-->
 ## 2025.4.3 (2025-04-15)
 ### Fix
-* Bumping pyowletapi to 2025.4.8.
 * Changes to how the sensors are stored to solve the issue where only one device is added, thanks [`@MarjovanLier`](https://github.com/MarjovanLier). ([`1244bff`](https://github.com/ryanbdclark/owlet/commit/1244bffcb48d7337a9d7a0da518959fe4b31a230))
 
 ## 2025.4.2 (2025-04-14)
