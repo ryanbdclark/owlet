@@ -52,7 +52,7 @@ async def async_setup_entry(
 
     switches = []
     for coordinator in coordinators:
-        switches = [OwletBaseSwitch(coordinator, switch) for switch in SWITCHES]
+        switches.extend([OwletBaseSwitch(coordinator, switch) for switch in SWITCHES])
     async_add_entities(switches)
 
 

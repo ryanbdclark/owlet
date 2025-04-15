@@ -19,6 +19,7 @@ class OwletBaseEntity(CoordinatorEntity[OwletCoordinator], Entity):
     ) -> None:
         """Initialize the base entity."""
         super().__init__(coordinator)
+        self.coordinator = coordinator
         self.sock = coordinator.sock
 
     @property
@@ -26,9 +27,12 @@ class OwletBaseEntity(CoordinatorEntity[OwletCoordinator], Entity):
         """Return the device info of the device."""
         return DeviceInfo(
             identifiers={(DOMAIN, self.sock.serial)},
-            name="Owlet Baby Care Sock",
-            manufacturer=MANUFACTURER,
-            model=self.sock.model,
-            sw_version=self.sock.sw_version,
-            hw_version=f"{self.sock.version}r{self.sock.revision}",
+            name=f"Owlet Sock {self.sock.serial}",
+            connections={("mac", getattr(self.sock, "mac", "unknown"))},
+            suggested_area="Nursery",
+            configuration_url="https://my.owletcare.com/",
+            manufacturer="Owlet Baby Care",
+            model=getattr(self.sock, "model", None),
+            sw_version=getattr(self.sock, "sw_version", None),
+            hw_version=getattr(self.sock, "hw_version", "3r8"),
         )
