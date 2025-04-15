@@ -1,13 +1,18 @@
 # Changelog
 
 <!--next-version-placeholder-->
+## 2025.4.3 (2025-04-15)
+### Fix
+* Bumping pyowletapi to 2025.4.8.
+* Changes to how the sensors are stored to solve the issue where only one device is added, thanks [`@MarjovanLier`](https://github.com/MarjovanLier). ([`1244bff`](https://github.com/ryanbdclark/owlet/commit/1244bffcb48d7337a9d7a0da518959fe4b31a230))
+
 ## 2025.4.2 (2025-04-14)
 ### Fix
-* Bumping pyowletapi to 2025.4.1, should hopefully stop issue where only one device was added to HA.
+* Bumping pyowletapi to 2025.4.1, should hopefully stop issue where only one device was added to HA. ([`d323cbf`](https://github.com/ryanbdclark/owlet/commit/d323cbfd11411ff34866ead492de10c109c72689))
 
 ## 2025.4.1 (2025-04-11)
 ### Fix
-* Changes to stop errors after refactoring pyowletapi
+* Changes to stop errors after refactoring pyowletapi ([`6b343a7`](https://github.com/ryanbdclark/owlet/commit/6b343a76caad3375e10c80f4d26942a1bbbb831d))
 
 ## 2025.4.0 (2025-04-11)
 ### Fix
